@@ -6,11 +6,11 @@ const CriterioServicio = new CCriterioServicio();
 router.get("/",async function(req, res, next ){
  try 
   {
-    const Tcriterio= await CriterioServicio.TraerTodos('CALL USP_MDL_CRITERIO_TT').then(criterios =>
+    const Tcriterio= await CriterioServicio.TraerTodos('CALL USP_MDL_CRITERIO_TT').then(criterio =>
       {
         res.status(200).json({
-          Resultado:criterios,
-          mensaje:'Criterios listadas'
+          Criterio: criterio[0],
+          Mensaje:'Criterios Listados'
         })
       });
   }
@@ -28,8 +28,8 @@ router.get('/id',async function(req,res,next)
   {
     const TUcriterio = await CriterioServicio.TraerUno("CALL USP_MDL_CRITERIO_TU(?)",[Id_Rubrica]).then(criterio=>{
       res.status(200).json({
-        Resultado:criterio,
-        message:'Criterio Listado'
+        Criterio: criterio[0],
+        Mensaje:'Criterio Listado'
       });
     });
   }
@@ -45,10 +45,10 @@ router.post('/guardar',async function(req,res,next)
 
     try
     {
-      const Gcriterio = await CriterioServicio.Guardar("CALL USP_MDL_CRITERIO_G(?,?,?)",[DesCriterio,Id_Rubrica,Cod_UsuarioReg]).then(criterioG =>{
+      const Gcriterio = await CriterioServicio.Guardar("CALL USP_MDL_CRITERIO_G(?,?,?)",[DesCriterio,Id_Rubrica,Cod_UsuarioReg]).then(criterio =>{
           res.status(201).json({
-            Resultado: criterioG,
-            message: 'Criterio guardado'
+            Criterio: criterio[0],
+            Mensaje: 'Criterio Guardado'
           });
         });
     }
@@ -65,10 +65,10 @@ router.delete('/',async function(req,res,next)
 
   try
   {
-    const Ecriterio = await CriterioServicio.Eliminar('CALL USP_MDL_CRITERIO_E(?)',[DesCriterio]).then(criterioE =>{
+    const Ecriterio = await CriterioServicio.Eliminar('CALL USP_MDL_CRITERIO_E(?)',[DesCriterio]).then(criterio =>{
       res.status(201).json({
-        Resultado: criterioE,
-        message: 'Criterio eliminada'
+        Criterio: criterio[0],
+        Mensaje: 'Criterio Eliminado'
       });
     })
   }

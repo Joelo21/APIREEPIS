@@ -6,11 +6,11 @@ const CursoServicio = new CCursoServicio();
 router.get("/",async function(req, res, next ){
  try 
   {
-    const Tcurso = await CursoServicio.TraerTodos('CALL USP_MDL_CURSO_TT').then(cursos =>
+    const Tcurso = await CursoServicio.TraerTodos('CALL USP_MDL_CURSO_TT').then(curso =>
       {
         res.status(200).json({
-          Resultado:cursos,
-          mensaje:'Cursos listadas'
+          Curso: curso[0],
+          Mensaje:'Cursos Listados'
         })
       });
   }
@@ -29,8 +29,8 @@ router.get('/id',async function(req,res,next)
   {
     const TUcurso = await CursoServicio.TraerUno("CALL USP_MDL_CURSO_TU(?,?)",[Cod_Curso,Id_Resultado]).then(curso=>{
       res.status(200).json({
-        Resultado:curso,
-        message:'Curso Listado'
+        Curso: curso,
+        Mensaje:'Curso Listado'
       });
     });
   }

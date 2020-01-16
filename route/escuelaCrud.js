@@ -6,11 +6,11 @@ const EscuelaServicio = new CEscuelaServicio();
 router.get("/",async function(req, res, next ){
  try 
   {
-    const Tescuela = await EscuelaServicio.TraerTodos('CALL USP_MDL_ESCUELA_TT').then(escuelas =>
+    const Tescuela = await EscuelaServicio.TraerTodos('CALL USP_MDL_ESCUELA_TT').then(escuela =>
       {
         res.status(200).json({
-          Resultado:escuelas,
-          mensaje:'Escuelas listadas'
+          Escuelas: escuela[0],
+          Mensaje:'Escuelas listadas'
         })
       });
   }
@@ -22,13 +22,12 @@ router.get("/",async function(req, res, next ){
 
 router.get('/id',async function(req,res,next)
 {
-   const {Cod_Escuela}=req.body;
-
+  const {Cod_Escuela}=req.body;
   try
   {
     const TUescuela = await EscuelaServicio.TraerUno("CALL USP_MDL_ESCUELA_TU(?)",[Cod_Escuela]).then(escuela=>{
       res.status(200).json({
-        Resultado:escuela,
+        Resultado: escuela,
         message:'Escuela Lista'
       });
     });

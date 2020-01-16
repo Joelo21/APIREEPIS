@@ -9,8 +9,8 @@ router.get("/",async function(req, res, next ){
     const Tasignaturas = await AsignaturaServicio.TraerTodos('CALL USP_MDL_ASIGNACION_TT').then(asignaturas =>
       {
         res.status(200).json({
-          ASIGNATURAS:asignaturas,
-          mensaje:'Asignaturas listadas'
+          Asignaturas:asignaturas[0],
+          Mensaje:'Asignaturas listadas'
         })
       });
   }
@@ -29,8 +29,8 @@ router.get('/id',async function(req,res,next)
   {
     const TUasignatura = await AsignaturaServicio.TraerUno("CALL USP_MDL_ASIGNACION_TU(?,?)",[Cod_Asignacion,Id_Resultado]).then(asignatura=>{
       res.status(200).json({
-        ASIGNATURA:asignatura,
-        message:'Asignatura Listado'
+        Asignaturas: asignaturas[0],
+        Mensaje:'Asignatura Listada'
       });
     });
   }
@@ -48,8 +48,8 @@ router.post('/guardar',async function(req,res,next)
     {
       const Gasignatura = await AsignaturaServicio.Guardar("CALL USP_MDL_ASIGNACION_G(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[Id_Asignacion,Id_Escuela,Id_Curso,Id_Resultado,Cod_Asignacion,NomAsignacion,TipoAsignacion,Participantes,Presentados,Pendientes,Flag_Alta,Flag_Activo,Fecha_Limite,Cod_UsuarioReg]).then(asignaturaG =>{
           res.status(201).json({
-            resultado: asignaturaG,
-            message: 'Asignatura guardado'
+            Asignaturas: asignaturas[0],
+            Mensaje: 'Asignatura Guardada'
           });
         });
     }
@@ -70,8 +70,8 @@ router.delete('/',async function(req,res,next)
     console.log("1 paso");
     const asds = await AsignaturaServicio.Eliminar('CALL USP_MDL_ASIGNACION_E(?,?)',[Cod_Asignacion,Id_Resultado]).then(aas =>{
       res.status(201).json({
-        resultado: asignaturaE,
-        message: 'Asignatura eliminada'
+        Asignaturas: asignaturas[0],
+        Mensaje:'Asignatura Eliminada'
       });
     })
   }
