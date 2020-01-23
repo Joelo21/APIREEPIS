@@ -64,9 +64,9 @@ router.delete('/:Cod_Escuela',async function(req,res,next)
 
   try
   {
-    const Eescuela  = await EscuelaServicio.Eliminar('CALL USP_MDL_ESCUELA_E(?)',[Cod_Escuela]).then(escuelaE =>{
+    const Eescuela  = await EscuelaServicio.Eliminar('CALL USP_MDL_ESCUELA_E(?)',[Cod_Escuela]).then(escuela =>{
       res.status(201).json({
-        Resultado: escuelaE,
+        Resultado: escuela,
         message: 'Escuela eliminada'
       });
     })
