@@ -20,15 +20,15 @@ router.get("/",async function(req, res, next ){
   }
 });
 
-router.get('/id',async function(req,res,next)
+router.get('/:Cod_Escuela',async function(req,res,next)
 {
-  const {Cod_Escuela}=req.body;
+  const {Cod_Escuela}=req.params;
   try
   {
     const TUescuela = await EscuelaServicio.TraerUno("CALL USP_MDL_ESCUELA_TU(?)",[Cod_Escuela]).then(escuela=>{
       res.status(200).json({
-        Resultado: escuela,
-        message:'Escuela Lista'
+        Escuela: escuela[0][0],
+        Mensaje:'Escuela Listada'
       });
     });
   }
@@ -38,16 +38,16 @@ router.get('/id',async function(req,res,next)
     }
 });
 
-router.post('/guardar',async function(req,res,next)
+router.post('/Guardar',async function(req,res,next)
 {
-  const {Cod_Escuela,Sede,Descripcion,Cod_UsuarioReg}=req.body;
+  const {Cod_Escuela,Sede,Descripcion}=req.body;
 
     try
     {
-      const Gescuela = await EscuelaServicio.Guardar("CALL USP_MDL_ESCUELA_G(?,?,?,?)",[Cod_Escuela,Sede,Descripcion,Cod_UsuarioReg]).then(escuelaG =>{
+      const Gescuela = await EscuelaServicio.Guardar("CALL USP_MDL_ESCUELA_G(?,?,?)",[Cod_Escuela,Sede,Descripcion]).then(escuela =>{
           res.status(201).json({
-            Resultado: escuelaG,
-            message: 'Escuela guardado'
+            Escuela: escuela,
+            Mensaje: 'Escuela guardada'
           });
         });
     }
@@ -58,13 +58,12 @@ router.post('/guardar',async function(req,res,next)
 });
 
 
-router.delete('/',async function(req,res,next)
+router.delete('/:Cod_Escuela',async function(req,res,next)
 {
-  const {Cod_Escuela}=req.body;
+  const {Cod_Escuela}=req.params;
 
   try
   {
-    console.log("1 paso");
     const Eescuela  = await EscuelaServicio.Eliminar('CALL USP_MDL_ESCUELA_E(?)',[Cod_Escuela]).then(escuelaE =>{
       res.status(201).json({
         Resultado: escuelaE,
