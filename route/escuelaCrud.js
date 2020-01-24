@@ -26,11 +26,18 @@ router.get('/:Cod_Escuela',async function(req,res,next)
   try
   {
     const TUescuela = await EscuelaServicio.TraerUno("CALL USP_MDL_ESCUELA_TU(?)",[Cod_Escuela]).then(escuela=>{
-      res.status(200).json({
-        Escuela: escuela[0][0],
-        Mensaje:'Escuela Listada'
-      });
+      if (escuela[0].length===0) {
+        res.json({
+          Cod: 0
+        });       
+      } else {
+        res.status(200).json({
+          Escuela: escuela[0][0],
+          Cod: 1
+        });
+      }
     });
+  
   }
     catch(err)
     {
