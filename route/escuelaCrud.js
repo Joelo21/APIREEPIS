@@ -6,13 +6,18 @@ const EscuelaServicio = new CEscuelaServicio();
 router.get("/",async function(req, res, next ){
  try 
   {
-    const Tescuela = await EscuelaServicio.TraerTodos('CALL USP_MDL_ESCUELA_TT').then(escuela =>
-      {
+    const Tescuela = await EscuelaServicio.TraerTodos('CALL USP_MDL_ESCUELA_TT').then(escuela =>{
+      if (escuela[0].length===0) {
+        res.json({
+          Cod: 0
+        });             
+      } else {
         res.status(200).json({
-          Escuelas: escuela[0],
+          Escuela: escuela[0],
           Mensaje:'Escuelas listadas'
-        })
       });
+      }
+    });  
   }
   catch(err)
   {
