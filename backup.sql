@@ -13,7 +13,7 @@
 
 
 -- Volcando estructura de base de datos para reepis
-CREATE DATABASE IF NOT EXISTS `reepis` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE IF NOT EXISTS `reepis` /*!40100 DEFAULT CHARACTER SET utf8 */; 
 USE `reepis`;
 
 -- Volcando estructura para tabla reepis.mdl_asignacion
