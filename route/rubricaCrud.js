@@ -3,16 +3,21 @@ const router = express.Router();
 const CRubricaServicio = require("../services/Srubrica");
 const RubricaServicio = new CRubricaServicio();
 
-router.get("/",async function(req, res, next ){
+router.get("/List",async function(req, res, next ){
  try 
   {
-    const Trubrica= await RubricaServicio.TraerTodos('CALL USP_MDL_RUBRICA_TT').then(rubricas =>
-      {
+    const Trubrica= await RubricaServicio.TraerTodos('CALL USP_MDL_RUBRICA_TT').then(rubricas =>{
+      if (escuela[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });             
+      } else {
         res.status(200).json({
-          Resultado:rubricas,
-          mensaje:'Rubricas listadas'
-        })
+          Escuela: escuela[0],
+          Codigo: 1
       });
+      }
+    });
   }
   catch(err)
   {
