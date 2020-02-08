@@ -3,82 +3,94 @@ const router = express.Router();
 const CObjetivoServicio = require("../services/Sobjetivoeducacional");
 const ObjetivoServicio = new CObjetivoServicio();
 
-router.get("/",async function(req, res, next ){
- try 
-  {
-    const Tobjetivo= await ObjetivoServicio.TraerTodos('CALL USP_MDL_OBJETIVOEDUCACIONAL_TT').then(objetivos =>
-      {
+router.get("/List", async function(req, res, next) {
+  try {
+    const Tobjetivo = await ObjetivoServicio.TraerTodos(
+      "CALL USP_MDL_OBJETIVOEDUCACIONAL_TT"
+    ).then(objetivo => {
+      if (objetivo[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
         res.status(200).json({
-          Resultado:objetivos,
-          mensaje:'Objetivos listados'
-        })
-      });
-  }
-  catch(err)
-  {
+          Objetivos: objetivo[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
     next(err);
   }
 });
 
-router.get('/id',async function(req,res,next)
-{
-   const {Cod_Objetivo}=req.body;
-
-  try
-  {
-    const TUobjetivo = await ObjetivoServicio.TraerUno("CALL USP_MDL_OBJETIVOEDUCACIONAL_TU(?)",[Cod_Objetivo]).then(nivel=>{
-      res.status(200).json({
-        Resultado:nivel,
-        message:'Objetivo Listado'
-      });
-    });
-  }
-    catch(err)
-    {
-      next(err);
-    }
-});
-
-router.post('/guardar',async function(req,res,next)
-{
-  const {Cod_Objetivo,Id_Escuela,Descripcion,Cod_UsuarioReg}=req.body;
-
-    try
-    {
-      const Gobjetivo  = await ObjetivoServicio.Guardar("CALL USP_MDL_OBJETIVOEDUCACIONAL_G(?,?,?,?)",[Cod_Objetivo,Id_Escuela,Descripcion,Cod_UsuarioReg]).then(objetivoG =>{
-          res.status(201).json({
-            Resultado: objetivoG,
-            message: 'Objetivo guardado'
-          });
+router.get("/:Cod_Objetivo", async function(req, res, next) {
+  const { Cod_Objetivo } = req.params;
+  try {
+    const TUescuela = await EscuelaServicio.TraerUno(
+      "CALL USP_MDL_OBJETIVOEDUCACIONAL_TU(?)",
+      [Cod_Objetivo]
+    ).then(objetivo => {
+      if (objetivo[0].length === 0) {
+        res.json({
+          Codigo: 0
         });
-    }
-    catch(err)
-    {
-      next(err);
-    }
-});
-
-
-router.delete('/',async function(req,res,next)
-{
-  const {Cod_Objetivo}=req.body;
-
-  try
-  {
-    console.log("1 paso");
-    const Eobjetivo = await ObjetivoServicio.Eliminar('CALL USP_MDL_OBJETIVOEDUCACIONAL_E(?)',[Cod_Objetivo]).then(objetivoE =>{
-      res.status(201).json({
-        Resultado: objetivoE,
-        message: 'Objetivo eliminado'
-      });
-    })
+      } else {
+        res.status(200).json({
+          Objetivo: objetivo[0][0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
   }
-    catch(err)
-    {
-      next(err);
-    }
 });
 
+router.post("/Guardar", async function(req, res, next) {
+  const { 
+    Cod_Objetivo, 
+    Id_Escuela, 
+    Descripcion, 
+    Cod_UsuarioReg 
+  } = req.body;
+  try {
+    const Gobjetivo = await ObjetivoServicio.Guardar(
+      "CALL USP_MDL_OBJETIVOEDUCACIONAL_G(?,?,?,?)",
+      [Cod_Objetivo, Id_Escuela, Descripcion, Cod_UsuarioReg]
+    ).then(objetivo => {
+      res.status(201).json({
+        Objetivo: objetivo,
+        Codigo: "Objetivo guardada"
+      });
+      console.log(escuela);
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
+router.delete("/Del:Cod_Objetivo", async function(req, res, next) {
+  const { Cod_Objetivo } = req.params;
+  try {
+    const Eobjetivo = await ObjetivoServicio.Eliminar(
+      "CALL USP_MDL_OBJETIVOEDUCACIONAL_E(?)",
+      [Cod_Objetivo]
+    ).then(objetivo => {
+      if (objetivo.affectedRows === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(201).json({
+          Objetivo: "Objetivo Eliminada",
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;
