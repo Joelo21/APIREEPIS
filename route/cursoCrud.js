@@ -35,7 +35,7 @@ router.get('/id',async function(req,res,next){
 
 router.post('/guardar',async function(req,res,next){
   const {Id_Escuela,Id_Resultado,Cod_Curso,NomCurso,Descripcion,Docente,Semestre,Cod_UsuarioReg}=req.body;
- ¡try
+ try
   {
     const Gcurso = await CursoServicio.Guardar("CALL USP_MDL_CURSO_G(?,?,?,?,?,?,?,?)",[Id_Escuela,Id_Resultado,Cod_Curso,NomCurso,Descripcion,Docente,Semestre,Cod_UsuarioReg]).then(cursoG =>{
         res.status(201).json({

@@ -27,7 +27,7 @@ router.get("/List", async function(req, res, next) {
 router.get("/:Cod_Objetivo", async function(req, res, next) {
   const { Cod_Objetivo } = req.params;
   try {
-    const TUescuela = await EscuelaServicio.TraerUno(
+    const TUescuela = await ObjetivoServicio.TraerUno(
       "CALL USP_MDL_OBJETIVOEDUCACIONAL_TU(?)",
       [Cod_Objetivo]
     ).then(objetivo => {
