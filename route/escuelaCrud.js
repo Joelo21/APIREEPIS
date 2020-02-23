@@ -24,6 +24,27 @@ router.get("/List", async function(req, res, next) {
   }
 });
 
+router.get("/ListCom", async function(req, res, next) {
+  try {
+    const Tescuela = await EscuelaServicio.TraerTodos(
+      "CALL USP_MDL_ESCUELA_TT_CodDesc"
+    ).then(escuela => {
+      if (escuela[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          Escuelas: escuela[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/:Cod_Escuela", async function(req, res, next) {
   const { Cod_Escuela } = req.params;
   try {

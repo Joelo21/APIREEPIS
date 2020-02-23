@@ -50,14 +50,13 @@ router.get("/:Cod_Objetivo", async function(req, res, next) {
 router.post("/Guardar", async function(req, res, next) {
   const { 
     Cod_Objetivo, 
-    Id_Escuela, 
+    Cod_Escuela, 
     Descripcion, 
-    Cod_UsuarioReg 
   } = req.body;
   try {
     const Gobjetivo = await ObjetivoServicio.Guardar(
-      "CALL USP_MDL_OBJETIVOEDUCACIONAL_G(?,?,?,?)",
-      [Cod_Objetivo, Id_Escuela, Descripcion, Cod_UsuarioReg]
+      "CALL USP_MDL_OBJETIVOEDUCACIONAL_G(?,?,?)",
+      [Cod_Objetivo, Cod_Escuela, Descripcion]
     ).then(objetivo => {
       res.status(201).json({
         Objetivo: objetivo,
@@ -76,7 +75,7 @@ router.delete("/Del:Cod_Objetivo", async function(req, res, next) {
     const Eobjetivo = await ObjetivoServicio.Eliminar(
       "CALL USP_MDL_OBJETIVOEDUCACIONAL_E(?)",
       [Cod_Objetivo]
-    ).then(objetivo => {
+    ).then(objetivo => {    
       if (objetivo.affectedRows === 0) {
         res.json({
           Codigo: 0
@@ -88,6 +87,7 @@ router.delete("/Del:Cod_Objetivo", async function(req, res, next) {
         });
       }
     });
+    
   } catch (err) {
     next(err);
   }
