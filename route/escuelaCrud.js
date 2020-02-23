@@ -83,7 +83,6 @@ router.post("/Guardar", async function(req, res, next) {
         Escuela: escuela,
         Codigo: "Escuela guardada"
       });
-      console.log(escuela);
     });
   } catch (err) {
     next(err);
