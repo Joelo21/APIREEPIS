@@ -107,6 +107,7 @@ router.delete("/Del:Cod_Escuela", async function(req, res, next) {
           Codigo: 1
         });
       }
+      console.log(escuela);
     });
   } catch (err) {
     next(err);
