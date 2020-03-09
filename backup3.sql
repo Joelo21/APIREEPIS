@@ -232,7 +232,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_ASIGNACION_G
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_ASIGNACION_G`(
+CREATE PROCEDURE `USP_MDL_ASIGNACION_G`(
 IN pCod_Curso varchar(8),
 IN pCod_Asignacion varchar(8),
 IN pNomAsignacion varchar(1024),
@@ -279,7 +279,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_ASIGNACION_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_ASIGNACION_TT`()
+CREATE PROCEDURE `USP_MDL_ASIGNACION_TT`()
 BEGIN
 	SELECT * FROM mdl_asignacion;
 	END//
@@ -287,7 +287,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_ASIGNACION_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_ASIGNACION_TU`(
+CREATE PROCEDURE `USP_MDL_ASIGNACION_TU`(
    IN pCod_Asignacion varchar(8),
 	IN pCod_Resultado varchar(8)
 	)
@@ -300,7 +300,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_CRITERIO_E
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_CRITERIO_E`(
+CREATE PROCEDURE `USP_MDL_CRITERIO_E`(
    IN pCod_Criterio varchar(8)
    )
 BEGIN
@@ -311,7 +311,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_CRITERIO_G
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_CRITERIO_G`(
+CREATE PROCEDURE `USP_MDL_CRITERIO_G`(
 IN pCod_Rubrica VARCHAR(8),
 IN pCod_Criterio VARCHAR(8),
 IN pDesCriterio VARCHAR(20)
@@ -342,7 +342,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_CRITERIO_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_CRITERIO_TT`()
+CREATE PROCEDURE `USP_MDL_CRITERIO_TT`()
 BEGIN
 	SELECT * FROM mdl_Criterio;
 	END//
@@ -350,7 +350,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_CRITERIO_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_CRITERIO_TU`(
+CREATE PROCEDURE `USP_MDL_CRITERIO_TU`(
    IN pId_Rubrica INT)
 BEGIN
    SELECT *
@@ -361,7 +361,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_CURSO_E
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_CURSO_E`(
+CREATE PROCEDURE `USP_MDL_CURSO_E`(
 	IN pCod_Curso varchar(8),
 	IN pCod_Resultado VARCHAR(8)
 	)
@@ -373,7 +373,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_CURSO_G
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_CURSO_G`(
+CREATE PROCEDURE `USP_MDL_CURSO_G`(
 IN pCod_Curso varchar(8),
 IN pCod_Resultado VARCHAR(8),
 IN pNomCurso varchar(1024),
@@ -417,7 +417,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_CURSO_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_CURSO_TT`()
+CREATE PROCEDURE `USP_MDL_CURSO_TT`()
 BEGIN
 	SELECT * FROM mdl_Curso;
 	END//
@@ -425,7 +425,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_CURSO_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_CURSO_TU`(
+CREATE PROCEDURE `USP_MDL_CURSO_TU`(
    IN pCod_Resultado VARCHAR(8),
 	IN pCod_Curso varchar(8)
 	)
@@ -499,7 +499,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_INDICADORNIVEL_E
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_INDICADORNIVEL_E`(
+CREATE PROCEDURE `USP_MDL_INDICADORNIVEL_E`(
 IN pCod_IndicadorNivel VARCHAR(8)
 )
 BEGIN
@@ -510,7 +510,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_INDICADORNIVEL_G
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_INDICADORNIVEL_G`(
+CREATE PROCEDURE `USP_MDL_INDICADORNIVEL_G`(
 IN pCod_IndicadorNivel VARCHAR(8),
 In pValor VARCHAR (5),
 IN pDescripcion VARCHAR (25)
@@ -542,7 +542,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_INDICADORNIVEL_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_INDICADORNIVEL_TT`()
+CREATE PROCEDURE `USP_MDL_INDICADORNIVEL_TT`()
 BEGIN
 SELECT * FROM mdl_indicadornivel;
 END//
@@ -550,7 +550,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_INDICADORNIVEL_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_INDICADORNIVEL_TU`(
+CREATE PROCEDURE `USP_MDL_INDICADORNIVEL_TU`(
 IN pCod_IndicadorNivel VARCHAR(8)
 )
 BEGIN
@@ -561,7 +561,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_INDICADOR_E
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_INDICADOR_E`(
+CREATE PROCEDURE `USP_MDL_INDICADOR_E`(
 	IN pCod_Indicador varchar(8),
 	IN pCod_Resultado varchar(8),
 	IN pCod_IndicadorNivel VARCHAR(8)
@@ -574,7 +574,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_INDICADOR_G
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_INDICADOR_G`(
+CREATE PROCEDURE `USP_MDL_INDICADOR_G`(
 IN pCod_Resultado VARCHAR(8),
 IN pCod_IndicadorNivel VARCHAR(8),
 IN pCod_Indicador VARCHAR(8),
@@ -618,7 +618,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_INDICADOR_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_INDICADOR_TT`()
+CREATE PROCEDURE `USP_MDL_INDICADOR_TT`()
 BEGIN
 SELECT * FROM mdl_indicador;
 END//
@@ -626,7 +626,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_INDICADOR_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_INDICADOR_TU`(
+CREATE PROCEDURE `USP_MDL_INDICADOR_TU`(
 IN pCod_Indicador varchar(8),
 IN pCod_Resultado VARCHAR(8),
 IN pCod_IndicadorNivel VARCHAR(8)
@@ -640,7 +640,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_MATRICULA_E
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_MATRICULA_E`(
+CREATE PROCEDURE `USP_MDL_MATRICULA_E`(
    IN pCod_Persona varchar(8),
 	IN pCod_Curso varchar(8)
 	)
@@ -652,7 +652,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_MATRICULA_G
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_MATRICULA_G`(
+CREATE PROCEDURE `USP_MDL_MATRICULA_G`(
 IN pCod_Persona varchar (8),
 IN pCod_Curso varchar (8),
 IN pCod_Matricula VARCHAR(8),
@@ -691,7 +691,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_MATRICULA_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_MATRICULA_TT`()
+CREATE PROCEDURE `USP_MDL_MATRICULA_TT`()
 BEGIN
 	SELECT * FROM mdl_Matricula;
 	END//
@@ -699,7 +699,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_MATRICULA_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_MATRICULA_TU`(
+CREATE PROCEDURE `USP_MDL_MATRICULA_TU`(
 IN pCod_Persona varchar(8),
 IN pCod_Curso varchar(8)
 )
@@ -712,7 +712,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_NIVEL_E
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_NIVEL_E`(
+CREATE PROCEDURE `USP_MDL_NIVEL_E`(
    IN pCod_Rubrica varchar(8)
    )
 BEGIN
@@ -723,7 +723,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_NIVEL_G
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_NIVEL_G`(
+CREATE PROCEDURE `USP_MDL_NIVEL_G`(
 IN pCod_Rubrica VARCHAR(8),
 IN pCod_Nivel VARCHAR(8),
 IN pDescripcion VARCHAR(10),
@@ -758,7 +758,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_NIVEL_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_NIVEL_TT`()
+CREATE PROCEDURE `USP_MDL_NIVEL_TT`()
 BEGIN
 	SELECT * FROM mdl_Nivel;
 	END//
@@ -766,7 +766,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_NIVEL_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_NIVEL_TU`(
+CREATE PROCEDURE `USP_MDL_NIVEL_TU`(
    IN pCod_Rubrica varchar(8))
 BEGIN
    SELECT *
@@ -838,7 +838,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_PERSONA_E
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_PERSONA_E`(
+CREATE PROCEDURE `USP_MDL_PERSONA_E`(
    IN pCod_Persona varchar(8)
    )
 BEGIN
@@ -849,7 +849,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_PERSONA_G
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_PERSONA_G`(
+CREATE PROCEDURE `USP_MDL_PERSONA_G`(
 IN pCod_Persona VARCHAR(8),
 IN pNombre VARCHAR(50),
 IN pApPaterno VARCHAR(30),
@@ -896,7 +896,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_PERSONA_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_PERSONA_TT`()
+CREATE PROCEDURE `USP_MDL_PERSONA_TT`()
 BEGIN
 	SELECT * FROM mdl_Persona;
 	END//
@@ -904,7 +904,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_PERSONA_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_PERSONA_TU`(
+CREATE PROCEDURE `USP_MDL_PERSONA_TU`(
    IN pCod_Persona varchar(8))
 BEGIN
    SELECT *
@@ -915,7 +915,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_RESULTADOESTUDIANTE_E
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_RESULTADOESTUDIANTE_E`(
+CREATE PROCEDURE `USP_MDL_RESULTADOESTUDIANTE_E`(
    IN pCod_Resultado varchar(8)
    )
 BEGIN
@@ -961,7 +961,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_RESULTADOESTUDIANTE_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_RESULTADOESTUDIANTE_TT`()
+CREATE PROCEDURE `USP_MDL_RESULTADOESTUDIANTE_TT`()
 BEGIN
 	SELECT * FROM mdl_ResultadoEstudiante;
 	END//
@@ -969,7 +969,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_RESULTADOESTUDIANTE_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_RESULTADOESTUDIANTE_TU`(
+CREATE PROCEDURE `USP_MDL_RESULTADOESTUDIANTE_TU`(
    IN pCod_Resultado varchar(8))
 BEGIN
    SELECT *
@@ -980,7 +980,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_RUBRICA_E
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_RUBRICA_E`(
+CREATE PROCEDURE `USP_MDL_RUBRICA_E`(
  IN pCod_Rubrica VARCHAR(8),
  IN pCod_Asignacion VARCHAR(8),
  IN pCod_Persona VARCHAR(8)
@@ -994,7 +994,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_RUBRICA_G
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_RUBRICA_G`(
+CREATE PROCEDURE `USP_MDL_RUBRICA_G`(
 IN pCod_Rubrica VARCHAR(8),
 IN pCod_Asignacion VARCHAR(8),
 IN pCod_Persona VARCHAR(8),
@@ -1033,7 +1033,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_RUBRICA_TT
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_RUBRICA_TT`()
+CREATE PROCEDURE `USP_MDL_RUBRICA_TT`()
 BEGIN
 	SELECT * FROM mdl_Rubrica;
 	END//
@@ -1041,7 +1041,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_RUBRICA_TU
 DELIMITER //
-CREATE DEFINER=`root`@`pc-lenovo` PROCEDURE `USP_MDL_RUBRICA_TU`(
+CREATE PROCEDURE `USP_MDL_RUBRICA_TU`(
    IN pCod_Rubrica VARCHAR(8),
    IN pCod_Asignacion VARCHAR(8),
    IN pCod_Persona VARCHAR(8)
