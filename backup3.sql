@@ -165,13 +165,12 @@ REPLACE INTO `mdl_objetivoeducacional` (`Cod_Escuela`, `Cod_Objetivo`, `Descripc
 
 -- Volcando estructura para tabla reepis.mdl_persona
 CREATE TABLE IF NOT EXISTS `mdl_persona` (
-  `Cod_Persona` varchar(8) NOT NULL,
+  `Cod_Persona` VARCHAR(20) NOT NULL,
   `Nombre` varchar(50) DEFAULT NULL,
-  `ApPaterno` varchar(30) DEFAULT NULL,
-  `ApMaterno` varchar(30) DEFAULT NULL,
+  `Apellidos` varchar(150) DEFAULT NULL,
   `NomPersona` varchar(200) NOT NULL,
   `Correo` varchar(50) DEFAULT NULL,
-  `Grado` varchar(15) DEFAULT NULL,
+  `Grado` VARCHAR(100) DEFAULT NULL,
   PRIMARY KEY (`Cod_Persona`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -438,7 +437,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_ESCUELA_E
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ESCUELA_E`(
+CREATE PROCEDURE `USP_MDL_ESCUELA_E`(
    IN pCod_Escuela varchar(8)
    )
 BEGIN
@@ -449,7 +448,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_ESCUELA_G
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ESCUELA_G`(
+CREATE PROCEDURE `USP_MDL_ESCUELA_G`(
 IN pCod_Escuela VARCHAR(8),
 IN pSede VARCHAR(30),
 IN pDescripcion VARCHAR(255)
@@ -480,7 +479,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_ESCUELA_TT
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ESCUELA_TT`()
+CREATE PROCEDURE `USP_MDL_ESCUELA_TT`()
 BEGIN
 	SELECT * FROM mdl_Escuela;
 	END//
@@ -488,7 +487,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_ESCUELA_TU
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ESCUELA_TU`(
+CREATE PROCEDURE `USP_MDL_ESCUELA_TU`(
    IN pCod_Escuela varchar(8))
 BEGIN
    SELECT *
@@ -777,7 +776,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_OBJETIVOEDUCACIONAL_E
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_E`(
+CREATE PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_E`(
    IN pCod_Objetivo VARCHAR(8)
    )
 BEGIN
@@ -788,7 +787,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_OBJETIVOEDUCACIONAL_G
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_G`(
+CREATE PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_G`(
 IN pCod_Objetivo VARCHAR(8),
 IN pCod_Escuela VARCHAR(8),
 IN pDescripcion VARCHAR(1024)
@@ -819,7 +818,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_OBJETIVOEDUCACIONAL_TT
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_TT`()
+CREATE PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_TT`()
 BEGIN
 	SELECT * FROM mdl_objetivoeducacional;
 	END//
@@ -827,7 +826,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_OBJETIVOEDUCACIONAL_TU
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_TU`(
+CREATE PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_TU`(
    IN pCod_Objetivo VARCHAR(8))
 BEGIN
    SELECT *
@@ -850,13 +849,12 @@ DELIMITER ;
 -- Volcando estructura para procedimiento reepis.USP_MDL_PERSONA_G
 DELIMITER //
 CREATE PROCEDURE `USP_MDL_PERSONA_G`(
-IN pCod_Persona VARCHAR(8),
+IN pCod_Persona VARCHAR(20),
 IN pNombre VARCHAR(50),
-IN pApPaterno VARCHAR(30),
-IN pApMaterno VARCHAR(30),
+IN pApellidos VARCHAR(150),
 IN pNomPersona VARCHAR(200),
 IN pCorreo VARCHAR(50),
-IN pGrado VARCHAR(15)
+IN pGrado VARCHAR(100)
 )
 BEGIN
 IF NOT EXISTS (SELECT Cod_Persona FROM mdl_Persona WHERE  Cod_Persona = pCod_Persona)
@@ -864,8 +862,7 @@ THEN
 INSERT INTO mdl_Persona(
 Cod_Persona,
 Nombre,
-ApPaterno,
-ApMaterno,
+Apellidos,
 NomPersona,
 Correo,
 Grado
@@ -873,8 +870,7 @@ Grado
 VALUES (
 pCod_Persona,
 pNombre,
-pApPaterno,
-pApMaterno,
+pApellidos,
 pNomPersona,
 pCorreo,
 pGrado
@@ -884,8 +880,7 @@ UPDATE mdl_Persona
 SET
 Cod_Persona=pCod_Persona,
 Nombre=pNombre,
-ApPaterno=pApPaterno,
-ApMaterno=pApMaterno,
+Apellidos=pApellidos,
 NomPersona=pNomPersona,
 Correo=pCorreo,
 Grado=pGrado
@@ -926,7 +921,7 @@ DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_RESULTADOESTUDIANTE_G
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_RESULTADOESTUDIANTE_G`(
+CREATE PROCEDURE `USP_MDL_RESULTADOESTUDIANTE_G`(
 IN pCod_Resultado VARCHAR(8),
 IN pNomResultado VARCHAR(200),
 IN pDescripcion varchar(1024),

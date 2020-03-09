@@ -3,82 +3,98 @@ const router = express.Router();
 const CPersonaServicio = require("../services/Spersona");
 const PersonaServicio = new CPersonaServicio();
 
-router.get("/",async function(req, res, next ){
- try 
-  {
-    const Tpersonas= await PersonaServicio.TraerTodos('CALL USP_MDL_PERSONA_TT').then(personas =>
-      {
+router.get("/List", async function(req, res, next) {
+  try {
+    const Tpersonas = await PersonaServicio.TraerTodos(
+      "CALL USP_MDL_PERSONA_TT"
+    ).then(persona => {
+      if (persona[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
         res.status(200).json({
-          Resultado:personas,
-          mensaje:'Personas listadas'
-        })
-      });
-  }
-  catch(err)
-  {
+          Personas: persona[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
     next(err);
   }
 });
 
-router.get('/id',async function(req,res,next)
-{
-   const {Cod_Persona}=req.body;
+router.get("/:Cod_Persona", async function(req, res, next) {
+  const { Cod_Persona } = req.params;
+  try {
+    const TUpersona = await PersonaServicio.TraerUno(
+      "CALL USP_MDL_PERSONA_TU(?)",
+      [Cod_Persona]
+    ).then(persona => {
+      if (persona[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          Persona: persona[0][0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
-  try
-  {
-    const TUpersona = await PersonaServicio.TraerUno("CALL USP_MDL_PERSONA_TU(?)",[Cod_Persona]).then(persona=>{
-      res.status(200).json({
-        Resultado:persona,
-        message:'Persona listada'
+router.post("/Guardar", async function(req, res, next) {
+  const {
+    Cod_Persona,
+    Nombre,
+    Apellidos,
+    NomPersona,
+    Correo,
+    Grado
+  } = req.body;
+  try {
+    const Gpersona = await PersonaServicio.Guardar(
+      "CALL USP_MDL_PERSONA_G(?,?,?,?,?,?)",
+      [Cod_Persona, Nombre, Apellidos, NomPersona, Correo, Grado]
+    ).then(persona => {
+      res.status(201).json({
+        Persona: persona,
+        message: "Persona guardada"
       });
     });
+  } catch (err) {
+    next(err);
   }
-    catch(err)
-    {
-      next(err);
-    }
 });
 
-router.post('/guardar',async function(req,res,next)
-{
-  const {Cod_Persona,Nombre,ApPaterno,ApMaterno,NomPersona,Correo,Grado,Cod_UsuarioReg}=req.body;
+router.delete("/Del:Cod_Persona", async function(req, res, next) {
+  const { Cod_Persona } = req.params;
 
-    try
-    {
-      const Gpersona  = await PersonaServicio.Guardar("CALL USP_MDL_PERSONA_G(?,?,?,?,?,?,?,?)",[Cod_Persona,Nombre,ApPaterno,ApMaterno,NomPersona,Correo,Grado,Cod_UsuarioReg]).then(personaG =>{
-          res.status(201).json({
-            Resultado: personaG,
-            message: 'Persona guardada'
-          });
-        });
-    }
-    catch(err)
-    {
-      next(err);
-    }
-});
-
-
-router.delete('/',async function(req,res,next)
-{
-  const {Cod_Persona}=req.body;
-
-  try
-  {
+  try {
     console.log("1 paso");
-    const Epersona = await PersonaServicio.Eliminar('CALL USP_MDL_PERSONA_E(?)',[Cod_Persona]).then(personaE =>{
-      res.status(201).json({
-        Resultado: personaE,
-        message: 'Persona eliminada'
-      });
-    })
+    const Epersona = await PersonaServicio.Eliminar(
+      "CALL USP_MDL_PERSONA_E(?)",
+      [Cod_Persona]
+    ).then(persona => {
+      if (persona.affectedRows === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(201).json({
+          Persona: "Persona Eliminada",
+          Codigo: 1
+        });
+      }
+      console.log(escuela);
+    });
+  } catch (err) {
+    next(err);
   }
-    catch(err)
-    {
-      next(err);
-    }
 });
-
-
 
 module.exports = router;
