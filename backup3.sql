@@ -1,5 +1,5 @@
 -- --------------------------------------------------------
--- Host:                         127.0.0.1
+-- Host:                         127.0.0.1s
 -- Versión del servidor:         10.4.8-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
 -- HeidiSQL Versión:             10.2.0.5599
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `mdl_criterio` (
   KEY `Cod_Rubrica` (`Cod_Rubrica`),
   CONSTRAINT `mdl_criterio_ibfk_1` FOREIGN KEY (`Cod_Rubrica`) REFERENCES `mdl_rubrica` (`Cod_Rubrica`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+z
 -- Volcando datos para la tabla reepis.mdl_criterio: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `mdl_criterio` DISABLE KEYS */;
 /*!40000 ALTER TABLE `mdl_criterio` ENABLE KEYS */;
