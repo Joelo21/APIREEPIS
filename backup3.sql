@@ -50,15 +50,12 @@ CREATE TABLE IF NOT EXISTS `mdl_criterio` (
 
 -- Volcando estructura para tabla reepis.mdl_curso
 CREATE TABLE IF NOT EXISTS `mdl_curso` (
-  `Cod_Resultado` varchar(8) DEFAULT NULL,
   `Cod_Curso` varchar(8) NOT NULL,
   `NomCurso` varchar(1024) NOT NULL,
   `Descripcion` varchar(200) DEFAULT NULL,
   `Docente` varchar(200) DEFAULT NULL,
   `Semestre` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Curso`),
-  KEY `Cod_Resultado` (`Cod_Resultado`),
-  CONSTRAINT `mdl_curso_ibfk_1` FOREIGN KEY (`Cod_Resultado`) REFERENCES `mdl_resultadoestudiante` (`Cod_Resultado`)
+  PRIMARY KEY (`Cod_Curso`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla reepis.mdl_curso: ~0 rows (aproximadamente)
@@ -220,6 +217,7 @@ CREATE TABLE IF NOT EXISTS `mdl_rubrica` (
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_ASIGNACION_E
 DELIMITER //
+CREATE PROCEDURE `USP_MDL_ASIGNACION_E`(
 	IN pCod_Asignacion varchar(8),
 	 IN pCod_Curso VARCHAR (8)
 	)
@@ -374,18 +372,16 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE `USP_MDL_CURSO_G`(
 IN pCod_Curso varchar(8),
-IN pCod_Resultado VARCHAR(8),
 IN pNomCurso varchar(1024),
 IN pDescripcion varchar(200),
 IN pDocente varchar(200),
 IN pSemestre varchar(100)
 )
 BEGIN
-IF NOT EXISTS (SELECT Cod_Curso, Cod_Resultado FROM mdl_curso WHERE  (Cod_Curso = pCod_Curso) AND (Cod_Resultado=pCod_Resultado))
+IF NOT EXISTS (SELECT Cod_Curso FROM mdl_curso WHERE  (Cod_Curso = pCod_Curso))
 THEN
 INSERT INTO mdl_curso (
 Cod_Curso,
-Cod_Resultado,
 NomCurso,
 Descripcion,
 Docente,
@@ -393,7 +389,6 @@ Semestre
 )
 VALUES (
 pCod_Curso,
-pCod_Resultado,
 pNomCurso,
 pNomCurso,
 pDescripcion,
@@ -404,12 +399,11 @@ ELSE
 UPDATE mdl_curso
 SET
 Cod_Curso=pCod_Curso,
-Cod_Resultado=pCod_Resultado,
 NomCurso=pNomCurso,
 Descripcion=pDescripcion,
 Docente=pDocente,
 Semestre=pSemestre
-WHERE (Cod_Curso=pCod_Curso) AND (Cod_Resultado=pCod_Resultado);
+WHERE (Cod_Curso=pCod_Curso);
 END IF;
 END//
 DELIMITER ;
@@ -783,45 +777,6 @@ BEGIN
    DELETE FROM mdl_objetivoeducacional
    WHERE (Cod_Objetivo = pCod_Objetivo);
 END//
-DELIMITER ;
-
--- Volcando estructura para procedimiento reepis.USP_MDL_OBJETIVOEDUCACIONAL_G
-DELIMITER //
-CREATE PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_G`(
-IN pCod_Objetivo VARCHAR(8),
-IN pCod_Escuela VARCHAR(8),
-IN pDescripcion VARCHAR(1024)
-)
-BEGIN
-IF NOT EXISTS (SELECT Cod_Objetivo FROM mdl_objetivoeducacional WHERE  Cod_Objetivo = pCod_Objetivo)
-THEN
-INSERT INTO mdl_objetivoeducacional(
-Cod_Objetivo,
-Cod_Escuela,
-Descripcion
-)
-VALUES (
-pCod_Objetivo,
-pCod_Escuela,
-pDescripcion
-);
-ELSE
-UPDATE mdl_objetivoeducacional
-SET
-Cod_Objetivo=pCod_Objetivo,
-Cod_Escuela=pCod_Escuela,
-Descripcion=pDescripcion
-WHERE (Cod_Objetivo=pCod_Objetivo);
-END IF;
-END//
-DELIMITER ;
-
--- Volcando estructura para procedimiento reepis.USP_MDL_OBJETIVOEDUCACIONAL_TT
-DELIMITER //
-CREATE PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_TT`()
-BEGIN
-	SELECT * FROM mdl_objetivoeducacional;
-	END//
 DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_OBJETIVOEDUCACIONAL_TU
