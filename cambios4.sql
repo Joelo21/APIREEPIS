@@ -11,7 +11,7 @@ BEGIN
 	SELECT E.Descripcion  AS Cod_Escuela, OB.Cod_Objetivo, OB.Descripcion  FROM mdl_objetivoeducacional AS OB INNER JOIN mdl_escuela AS E ON OB.Cod_Escuela = E.Cod_Escuela;
 	END//
 DELIMITER ;
-
+--manualmente
 DELIMITER //
 CREATE FUNCTION TraerCod_Escuela(pDescripcion VARCHAR(255)) 
 RETURNS VARCHAR(8) 
