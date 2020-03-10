@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS `mdl_criterio` (
   KEY `Cod_Rubrica` (`Cod_Rubrica`),
   CONSTRAINT `mdl_criterio_ibfk_1` FOREIGN KEY (`Cod_Rubrica`) REFERENCES `mdl_rubrica` (`Cod_Rubrica`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 -- Volcando datos para la tabla reepis.mdl_criterio: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `mdl_criterio` DISABLE KEYS */;
 /*!40000 ALTER TABLE `mdl_criterio` ENABLE KEYS */;
@@ -390,7 +389,6 @@ Semestre
 VALUES (
 pCod_Curso,
 pNomCurso,
-pNomCurso,
 pDescripcion,
 pDocente,
 pSemestre
@@ -599,7 +597,6 @@ UPDATE mdl_Indicador
 SET
 Cod_Resultado=pCod_Resultado,
 Cod_IndicadorNivel=pCod_IndicadorNivel,
-Cod_Indicador=pCod_Indicador,
 Cod_Indicador=pCod_Indicador,
 DescripcionLarga=pDescripcionLarga,
 DescripcionCorta=pDescripcionCorta,

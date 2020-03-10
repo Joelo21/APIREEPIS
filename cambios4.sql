@@ -48,3 +48,10 @@ WHERE (Cod_Objetivo=pCod_Objetivo);
 END IF;
 END//
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE `USP_MDL_RESULTADOESTUDIANTE_TT_CodDesc`()
+BEGIN
+	SELECT Cod_Resultado AS value, Cod_Resultado AS label  FROM mdl_resultadoestudiante;
+	END//
+DELIMITER ;
