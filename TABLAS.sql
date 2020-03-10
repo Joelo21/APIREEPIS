@@ -64,6 +64,15 @@ BEGIN
 	END//
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE `USP_MDL_CURSOBJETIVO_TxCod_Curso`(
+IN pCod_Curso VARCHAR(16))
+BEGIN
+	SELECT * FROM mdl_CursoObjetivo
+	 where Cod_Curso=pCod_Curso;
+	END//
+DELIMITER ;
+
 -- Volcando estructura para procedimiento reepis.USP_MDL_CURSOBJETIVO_TU
 DELIMITER //
 CREATE PROCEDURE  `USP_MDL_CURSOBJETIVO_TU`(
