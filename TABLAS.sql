@@ -1,23 +1,16 @@
--- Volcando estructura para tabla reepis.mdl_CursoObjetivo
+-- Tabla reepis.mdl_CursoObjetivo
 CREATE TABLE IF NOT EXISTS `mdl_CursoObjetivo` (
-  `Cod_CursoObjetivo` VARCHAR(16) NOT NULL,
-  `Cod_Objetivo` VARCHAR(16)  NOT NULL,
-  `Cod_Curso` VARCHAR(16)  NOT NULL,
+  `Cod_CursoObjetivo` varchar(16) NOT NULL,
+  `Cod_Objetivo` varchar(16)  NOT NULL,
+  `Cod_Curso` varchar(16)  NOT NULL,
   PRIMARY KEY (`Cod_CursoObjetivo`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
--- Volcando estructura para tabla reepis.mdl_ResulCursOjetivo
-CREATE TABLE IF NOT EXISTS `mdl_ResulCursOjetivo` (
-  `Cod_ResulCursOjetivo` varchar(8) NULL,
-  `Cod_Objetivo` varchar(8)  NOT NULL,
-  PRIMARY KEY (`Cod_ResulCursOjetivo`,`Cod_Objetivo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+--STORED PROCEDURE--
 -- Volcando estructura para procedimiento reepis.USP_MDL_CURSOBJETIVO_E
 DELIMITER //
 CREATE PROCEDURE `USP_MDL_CURSOBJETIVO_E`(
-   IN pCod_CursoObjetivo VARCHAR(8)
+   IN pCod_CursoObjetivo VARCHAR(16)
    )
 BEGIN
    DELETE FROM mdl_CursoObjetivo
@@ -25,7 +18,7 @@ BEGIN
 END//
 DELIMITER ;
 
--- Volcando estructura para procedimiento reepis.USP_MDL_CURSOBJETIVO_E
+-- Volcando estructura para procedimiento reepis.USP_MDL_CURSOBJETIVO_G
 DELIMITER //
 CREATE PROCEDURE `USP_MDL_CURSOBJETIVO_G`(
 IN pCod_CursoObjetivo VARCHAR(16),
@@ -67,7 +60,7 @@ DELIMITER ;
 -- Volcando estructura para procedimiento reepis.USP_MDL_CURSOBJETIVO_TU
 DELIMITER //
 CREATE PROCEDURE  `USP_MDL_CURSOBJETIVO_TU`(
-   IN pCod_CursoObjetivo INT)
+   IN pCod_CursoObjetivo VARCHAR(16))
 BEGIN
    SELECT *
    FROM mdl_CursoObjetivo
@@ -75,18 +68,82 @@ BEGIN
    END//
 DELIMITER ;
 
--- Volcando estructura para tabla reepis.mdl_IndRecursobjetivo
-CREATE TABLE IF NOT EXISTS `mdl_IndRecursobjetivo` (
-  `Cod_Indrecursobjetivo` varchar(8) NULL,
-  `Cod_ResulCursOjetivo` varchar(8)  NOT NULL,
-  PRIMARY KEY (`Cod_Indrecursobjetivo`,`Cod_ResulCursOjetivo`)
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+-- tabla reepis.mdl_ResulCursOjetivo
+CREATE TABLE IF NOT EXISTS `mdl_ResulCursOjetivo` (
+  `Cod_ResulCursOjetivo` varchar(16) NULL,
+  `Cod_Objetivo` varchar(16)  NOT NULL,
+  PRIMARY KEY (`Cod_ResulCursOjetivo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Volcando estructura para procedimiento reepis.USP_MDL_ResulCursOjetivo_E
+DELIMITER //
+CREATE PROCEDURE `USP_MDL_ResulCursOjetivo_E`(
+   IN pCod_ResulCursOjetivo VARCHAR(16)
+   )
+BEGIN
+   DELETE FROM mdl_ResulCursOjetivo
+   WHERE (Cod_ResulCursOjetivo = pCod_ResulCursOjetivo);
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_ResulCursOjetivo_G
+DELIMITER //
+CREATE PROCEDURE `USP_MDL_ResulCursOjetivo_G`(
+IN pCod_ResulCursOjetivo VARCHAR(16),
+IN pCod_Objetivo VARCHAR(16)
+)
+BEGIN
+IF NOT EXISTS (SELECT Cod_ResulCursOjetivo FROM mdl_ResulCursOjetivo WHERE Cod_ResulCursOjetivo = pCod_ResulCursOjetivo)
+THEN
+INSERT INTO mdl_ResulCursOjetivo(
+Cod_ResulCursOjetivo,
+Cod_Objetivo
+)
+VALUES (
+pCod_ResulCursOjetivo,
+pCod_Objetivo
+);
+ELSE
+UPDATE mdl_ResulCursOjetivo
+SET
+Cod_ResulCursOjetivo=pCod_ResulCursOjetivo,
+Cod_Objetivo=pCod_Objetivo
+WHERE (Cod_ResulCursOjetivo=pCod_ResulCursOjetivo);
+END IF;
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_ResulCursOjetivo_TT
+DELIMITER //
+CREATE PROCEDURE `USP_MDL_ResulCursOjetivo_TT`()
+BEGIN
+	SELECT * FROM mdl_ResulCursOjetivo;
+	END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_ResulCursOjetivo_TU
+DELIMITER //
+CREATE PROCEDURE `USP_MDL_ResulCursOjetivo_TU`(
+   IN pCod_ResulCursOjetivo varchar(16))
+BEGIN
+   SELECT *
+   FROM mdl_ResulCursOjetivo
+   where Cod_ResulCursOjetivo=pCod_ResulCursOjetivo;
+   END//
+DELIMITER ;
+
+
+-- tabla reepis.mdl_IndRecursobjetivo
+CREATE TABLE IF NOT EXISTS `mdl_IndRecursobjetivo` (
+  `Cod_Indrecursobjetivo` VARCHAR(16) NOT NULL,
+  `Cod_ResulCursOjetivo` VARCHAR(16)  NOT NULL,
+  PRIMARY KEY (`Cod_Indrecursobjetivo`)
+) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_IndRecursobjetivo_E
 DELIMITER //
 CREATE PROCEDURE `USP_MDL_IndRecursobjetivo_E`(
-   IN pCod_Indrecursobjetivo VARCHAR(8)
+   IN pCod_Indrecursobjetivo VARCHAR(16)
    )
 BEGIN
    DELETE FROM mdl_IndRecursobjetivo
@@ -97,8 +154,8 @@ DELIMITER ;
 -- Volcando estructura para procedimiento reepis.USP_MDL_IndRecursobjetivo_G
 DELIMITER //
 CREATE PROCEDURE `USP_MDL_IndRecursobjetivo_G`(
-IN pCod_Indrecursobjetivo VARCHAR(8),
-IN pCod_ResulCursOjetivo VARCHAR(8)
+IN pCod_Indrecursobjetivo VARCHAR(16),
+IN pCod_ResulCursOjetivo VARCHAR(16)
 )
 BEGIN
 IF NOT EXISTS (SELECT Cod_Indrecursobjetivo FROM mdl_IndRecursobjetivo WHERE Cod_Indrecursobjetivo = pCod_Indrecursobjetivo)
@@ -132,7 +189,7 @@ DELIMITER ;
 -- Volcando estructura para procedimiento reepis.USP_MDL_IndRecursobjetivo_TU
 DELIMITER //
 CREATE PROCEDURE  `USP_MDL_IndRecursobjetivo_TU`(
-   IN pCod_Indrecursobjetivo INT)
+   IN pCod_Indrecursobjetivo VARCHAR(16))
 BEGIN
    SELECT *
    FROM mdl_IndRecursobjetivo
