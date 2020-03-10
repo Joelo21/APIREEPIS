@@ -14,7 +14,6 @@ class SEscuela
       return escuelaIDT || []
     }
 
-
   async TraerUno(pProcedimiento,pParam)
     {
       const escuelaIDTU = await this.Mysqlib.TraerUno(pProcedimiento,pParam);
@@ -32,7 +31,6 @@ class SEscuela
       const escuelaIDE = await this.Mysqlib.Eliminar(pProcedimiento,pParam);
       return escuelaIDE;
     }
-
 }
 
 module.exports=SEscuela;
