@@ -63,7 +63,7 @@ router.post("/Guardar", async function(req, res, next) {
     ).then(persona => {
       res.status(201).json({
         Persona: persona,
-        message: "Persona guardada"
+        Mensaje: "Persona guardada"
       });
     });
   } catch (err) {
