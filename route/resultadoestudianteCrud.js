@@ -24,6 +24,28 @@ router.get("/List", async function(req, res, next) {
   }
 });
 
+
+router.get("/ListCom", async function(req, res, next) {
+  try {
+    const Tresultados = await ResultadoServicio.TraerTodos(
+      "CALL USP_MDL_RESULTADOESTUDIANTE_TT_CodDesc"
+    ).then(resultado => {
+      if (resultado[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          Resultado: resultado[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/:Cod_Resultado", async function(req, res, next) {
   const { Cod_Resultado } = req.params;
   try {
