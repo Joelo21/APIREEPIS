@@ -175,45 +175,55 @@ DELIMITER ;
 
 -- tabla reepis.mdl_IndRecursobjetivo
 CREATE TABLE IF NOT EXISTS `mdl_IndRecursobjetivo` (
-  `Cod_Indrecursobjetivo` VARCHAR(16) NOT NULL,
-  `Cod_ResulCursObjetivo` VARCHAR(16)  NOT NULL,
+  `Cod_IndicadorObjetivo` VARCHAR(16) NOT NULL,
+  `Cod_Resultado` VARCHAR(16)  NOT NULL,
+  `Cod_Indicador` VARCHAR(16),
+  `Cod_Curso` VARCHAR(16)
   PRIMARY KEY (`Cod_Indrecursobjetivo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_IndRecursobjetivo_E
 DELIMITER //
 CREATE PROCEDURE `USP_MDL_IndRecursobjetivo_E`(
-   IN pCod_Indrecursobjetivo VARCHAR(16)
+   IN pCod_IndicadorObjetivo VARCHAR(16)
    )
 BEGIN
    DELETE FROM mdl_IndRecursobjetivo
-   WHERE (Cod_Indrecursobjetivo = pCod_Indrecursobjetivo);
+   WHERE (Cod_IndicadorObjetivo = pCod_IndicadorObjetivo);
 END//
 DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_IndRecursobjetivo_G
 DELIMITER //
 CREATE PROCEDURE `USP_MDL_IndRecursobjetivo_G`(
-IN pCod_Indrecursobjetivo VARCHAR(16),
-IN pCod_ResulCursObjetivo VARCHAR(16)
+IN pCod_IndicadorObjetivo VARCHAR(16),
+IN pCod_Resultado VARCHAR(16),
+IN pCod_Indicador VARCHAR(16),
+IN Cod_Curso VARCHAR(16)
 )
 BEGIN
-IF NOT EXISTS (SELECT Cod_Indrecursobjetivo FROM mdl_IndRecursobjetivo WHERE Cod_Indrecursobjetivo = pCod_Indrecursobjetivo)
+IF NOT EXISTS (SELECT Cod_IndicadorObjetivo FROM mdl_IndRecursobjetivo WHERE Cod_IndicadorObjetivo = pCod_IndicadorObjetivo)
 THEN
 INSERT INTO mdl_IndRecursobjetivo(
-Cod_Indrecursobjetivo,
-Cod_ResulCursObjetivo
+Cod_IndicadorObjetivo,
+Cod_Resultado,
+Cod_Indicador,
+Cod_Curso
 )
 VALUES (
-pCod_Indrecursobjetivo,
-pCod_ResulCursObjetivo
+pCod_IndicadorObjetivo,
+pCod_Resultado,
+pCod_Indicador,
+pCod_Curso
 );
 ELSE
 UPDATE mdl_IndRecursobjetivo
 SET
-Cod_Indrecursobjetivo=pCod_Indrecursobjetivo,
-Cod_ResulCursObjetivo=pCod_ResulCursObjetivo
-WHERE (Cod_Indrecursobjetivo=pCod_Indrecursobjetivo);
+Cod_IndicadorObjetivo=pCod_IndicadorObjetivo,
+Cod_Resultado=pCod_Resultado,
+Cod_Indicador=pCod_Indicador,
+Cod_Curso=pCod_Cursoo
+WHERE (Cod_IndicadorObjetivo=pCod_IndicadorObjetivo);
 END IF;
 END//
 DELIMITER ;
@@ -229,10 +239,11 @@ DELIMITER ;
 -- Volcando estructura para procedimiento reepis.USP_MDL_IndRecursobjetivo_TU
 DELIMITER //
 CREATE PROCEDURE  `USP_MDL_IndRecursobjetivo_TU`(
-   IN pCod_Indrecursobjetivo VARCHAR(16))
+   IN pCod_IndicadorObjetivo VARCHAR(16))
 BEGIN
    SELECT *
    FROM mdl_IndRecursobjetivo
-   where Cod_Indrecursobjetivo=pCod_Indrecursobjetivo;
+   where Cod_IndicadorObjetivo=pCod_IndicadorObjetivo;
    END//
 DELIMITER ;
+
