@@ -24,7 +24,7 @@ router.get("/List", async function(req, res, next) {
   }
 });
 
-router.get("/ListCod_Curso", async function(req, res, next) {
+router.post("/ListCod_Curso", async function(req, res, next) {
   const { Cod_Curso } = req.body;
   try {
     const TcursoObjetivo = await CursoObjetivoServicio.TraerUno(

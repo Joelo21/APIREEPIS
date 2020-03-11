@@ -55,3 +55,11 @@ BEGIN
 	SELECT Cod_Resultado AS value, Cod_Resultado AS label  FROM mdl_resultadoestudiante;
 	END//
 DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_TT_CodDesc`()
+BEGIN
+	SELECT Cod_Objetivo AS value, Cod_Objetivo AS label  FROM mdl_objetivoeducacional;
+	END//
+DELIMITER ;
