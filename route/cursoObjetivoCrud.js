@@ -47,6 +47,29 @@ router.post("/ListCod_Curso", async function(req, res, next) {
   }
 });
 
+router.post("/ListOBxCod_Curso", async function(req, res, next) {
+  const { Cod_Curso } = req.body;
+  try {
+    const TcursoObjetivo = await CursoObjetivoServicio.TraerUno(
+      "CALL USP_MDL_CURSOBJETIVO_TobxCod_Curso(?)",
+      [Cod_Curso]
+    ).then(cursoObjetivo => {
+      if (cursoObjetivo[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          CursoObjetivos: cursoObjetivo[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/:Cod_CursoObjetivo", async function(req, res, next) {
   const { Cod_CursoObjetivo } = req.params;
   try {

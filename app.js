@@ -16,6 +16,7 @@ var PersonaCrud = require('./route/personaCrud');
 var ResultadoCrud = require('./route/resultadoestudianteCrud');
 var RubricaCrud = require('./route/rubricaCrud');
 var CursoObjetivoCrud = require('./route/cursoObjetivoCrud');
+var ObjetivoResultadoCrud = require('./route/objetivoResultadoCrud');
 
 var app = express();
 const cors=require("cors");
@@ -39,6 +40,7 @@ app.use('/PersonaCrud',PersonaCrud);
 app.use('/ResultadoCrud',ResultadoCrud);
 app.use('/RubricaCrud',RubricaCrud);
 app.use('/CursoObjetivoCrud',CursoObjetivoCrud);
+app.use('/ObjetivoResultadoCrud',ObjetivoResultadoCrud);
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
