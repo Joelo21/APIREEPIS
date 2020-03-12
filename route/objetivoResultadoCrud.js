@@ -51,7 +51,7 @@ router.get("/:Cod_objetivoResultado", async function(req, res, next) {
   const { Cod_objetivoResultado } = req.params;
   try {
     const TobjetivoResultado = await ObjetivoResultadoServicio.TraerUno(
-      "CALL UUSP_MDL_ResulCursObjetivo_TU(?)",
+      "CALL USP_MDL_ResulCursObjetivo_TU(?)",
       [Cod_objetivoResultado]
     ).then(objetivoResultado => {
       if (objetivoResultado[0].length === 0) {

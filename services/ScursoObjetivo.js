@@ -1,6 +1,6 @@
 const Mysqlib = require("../lib/Mysql");
 
-class SEscuela
+class SCursoObjetivo
 {
   constructor()
     {
@@ -33,7 +33,7 @@ class SEscuela
     }
 }
 
-module.exports=SEscuela;
+module.exports=SCursoObjetivo;
 
 
 

@@ -6,7 +6,7 @@ const resultadoIndicadorServicio = new CResultadoIndicadorServicio();
 router.get("/List", async function(req, res, next) {
   try {
     const TresultadoIndicador = await resultadoIndicadorServicio.TraerTodos(
-      "CALL USP_MDL_ResulCursObjetivo_TT"
+      "CALL USP_MDL_IndRecursobjetivo_TT"
     ).then(resultadoIndicador => {
       if (resultadoIndicador[0].length === 0) {
         res.json({
@@ -28,7 +28,7 @@ router.post("/ListCod_Curso", async function(req, res, next) {
   const { Cod_Curso } = req.body;
   try {
     const TresultadoIndicador = await resultadoIndicadorServicio.TraerUno(
-      "CALL USP_MDL_ResulCursObjetivo_TxCod_Curso(?)",
+      "CALL USP_MDL_IndRecursobjetivo_TxCod_Curso(?)",
       [Cod_Curso]
     ).then(resultadoIndicador => {
       if (resultadoIndicador[0].length === 0) {
@@ -47,12 +47,12 @@ router.post("/ListCod_Curso", async function(req, res, next) {
   }
 });
 
-router.get("/:Cod_resultadoIndicador", async function(req, res, next) {
-  const { Cod_resultadoIndicador } = req.params;
+router.get("/:Cod_IndicarResultado", async function(req, res, next) {
+  const { Cod_IndicarResultado } = req.params;
   try {
     const TresultadoIndicador = await resultadoIndicadorServicio.TraerUno(
-      "CALL UUSP_MDL_ResulCursObjetivo_TU(?)",
-      [Cod_resultadoIndicador]
+      "CALL USP_MDL_IndRecursobjetivo_TU(?)",
+      [Cod_IndicarResultado]
     ).then(resultadoIndicador => {
       if (resultadoIndicador[0].length === 0) {
         res.json({
@@ -72,19 +72,19 @@ router.get("/:Cod_resultadoIndicador", async function(req, res, next) {
 
 router.post("/Guardar", async function(req, res, next) {
   const { 
-    Cod_ResulCursObjetivo, 
-    Cod_Objetivo, 
-    Cod_Resultado,
+    Cod_IndicarResultado, 
+    Cod_Resultado, 
+    Cod_Indicador,
     Cod_Curso 
   } = req.body;
   try {
     const GresultadoIndicador = await resultadoIndicadorServicio.Guardar(
-      "CALL USP_MDL_ResulCursObjetivo_G(?,?,?,?)",
-      [Cod_ResulCursObjetivo, Cod_Objetivo, Cod_Resultado, Cod_Curso]
+      "CALL USP_MDL_IndRecursobjetivo_G(?,?,?,?)",
+      [Cod_IndicarResultado, Cod_Resultado, Cod_Indicador, Cod_Curso]
     ).then(resultadoIndicador => {
       res.status(201).json({
-        resultadoIndicador: resultadoIndicador,
-        Codigo: "Objetivo Resutado guardada"
+        ResultadoIndicador: resultadoIndicador,
+        Codigo: "Resultado Indicador guardada"
       });
     });
   } catch (err) {
@@ -92,12 +92,12 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/Del:Cod_resultadoIndicador", async function(req, res, next) {
-  const { Cod_resultadoIndicador } = req.params;
+router.delete("/Del:Cod_IndicarResultado", async function(req, res, next) {
+  const { Cod_IndicarResultado } = req.params;
   try {
     const EresultadoIndicador = await resultadoIndicadorServicio.Eliminar(
-      "CALL USP_MDL_ResulCursObjetivo_E(?)",
-      [Cod_resultadoIndicador]
+      "CALL USP_MDL_IndRecursobjetivo_E(?)",
+      [Cod_IndicarResultado]
     ).then(resultadoIndicador => {
       if (resultadoIndicador.affectedRows === 0) {
         res.json({
