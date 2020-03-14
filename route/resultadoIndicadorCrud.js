@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const CResultadoIndicadorServicio = require("../services/SresultadoIndicador");
-const resultadoIndicadorServicio = new CResultadoIndicadorServicio();
+const ResultadoIndicadorServicio = new CResultadoIndicadorServicio();
 
 router.get("/List", async function(req, res, next) {
   try {
-    const TresultadoIndicador = await resultadoIndicadorServicio.TraerTodos(
+    const TresultadoIndicador = await ResultadoIndicadorServicio.TraerTodos(
       "CALL USP_MDL_IndRecursobjetivo_TT"
     ).then(resultadoIndicador => {
       if (resultadoIndicador[0].length === 0) {
@@ -14,7 +14,7 @@ router.get("/List", async function(req, res, next) {
         });
       } else {
         res.status(200).json({
-          resultadoIndicadors: resultadoIndicador[0],
+          ResultadoIndicadors: resultadoIndicador[0],
           Codigo: 1
         });
       }
@@ -24,10 +24,10 @@ router.get("/List", async function(req, res, next) {
   }
 });
 
-router.post("/ListCod_Curso", async function(req, res, next) {
+router.post("/ListreinCod_Curso", async function(req, res, next) {
   const { Cod_Curso } = req.body;
   try {
-    const TresultadoIndicador = await resultadoIndicadorServicio.TraerUno(
+    const TresultadoIndicador = await ResultadoIndicadorServicio.TraerUno(
       "CALL USP_MDL_IndRecursobjetivo_TxCod_Curso(?)",
       [Cod_Curso]
     ).then(resultadoIndicador => {
@@ -50,7 +50,7 @@ router.post("/ListCod_Curso", async function(req, res, next) {
 router.get("/:Cod_IndicarResultado", async function(req, res, next) {
   const { Cod_IndicarResultado } = req.params;
   try {
-    const TresultadoIndicador = await resultadoIndicadorServicio.TraerUno(
+    const TresultadoIndicador = await ResultadoIndicadorServicio.TraerUno(
       "CALL USP_MDL_IndRecursobjetivo_TU(?)",
       [Cod_IndicarResultado]
     ).then(resultadoIndicador => {
@@ -78,7 +78,7 @@ router.post("/Guardar", async function(req, res, next) {
     Cod_Curso 
   } = req.body;
   try {
-    const GresultadoIndicador = await resultadoIndicadorServicio.Guardar(
+    const GresultadoIndicador = await ResultadoIndicadorServicio.Guardar(
       "CALL USP_MDL_IndRecursobjetivo_G(?,?,?,?)",
       [Cod_IndicarResultado, Cod_Resultado, Cod_Indicador, Cod_Curso]
     ).then(resultadoIndicador => {
@@ -95,7 +95,7 @@ router.post("/Guardar", async function(req, res, next) {
 router.delete("/Del:Cod_IndicarResultado", async function(req, res, next) {
   const { Cod_IndicarResultado } = req.params;
   try {
-    const EresultadoIndicador = await resultadoIndicadorServicio.Eliminar(
+    const EresultadoIndicador = await ResultadoIndicadorServicio.Eliminar(
       "CALL USP_MDL_IndRecursobjetivo_E(?)",
       [Cod_IndicarResultado]
     ).then(resultadoIndicador => {

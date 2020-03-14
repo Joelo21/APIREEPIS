@@ -47,6 +47,30 @@ router.post("/ListCod_Curso", async function(req, res, next) {
   }
 });
 
+router.post("/ListRExCod_Curso", async function(req, res, next) {
+  const { Cod_Curso } = req.body;
+  try {
+    const TcursoObjetivo = await ObjetivoResultadoServicio.TraerUno(
+      "CALL USP_MDL_ResulCursObjetivo_TrexCod_Curso(?)",
+      [Cod_Curso]
+    ).then(objetivoResultado => {
+      if (objetivoResultado[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          ObjetivoResultados: objetivoResultado[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
 router.get("/:Cod_objetivoResultado", async function(req, res, next) {
   const { Cod_objetivoResultado } = req.params;
   try {

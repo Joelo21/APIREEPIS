@@ -721,11 +721,11 @@ IN pDescripcion VARCHAR(10),
 IN pPuntaje INT
 )
 BEGIN
-IF NOT EXISTS (SELECT pCod_Rubrica,pCod_Nivel  FROM mdl_Nivel WHERE  (pCod_Rubrica = pCod_Rubrica) AND (Cod_Nivel=pCod_Nivel))
+IF NOT EXISTS (SELECT pCod_Nivel  FROM mdl_Nivel WHERE  (Cod_Nivel=pCod_Nivel))
 THEN
 INSERT INTO mdl_Nivel(
 Cod_Rubrica,
-Cod_Nivel.
+Cod_Nivel,
 Descripcion,
 Puntaje
 )

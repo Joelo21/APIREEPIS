@@ -161,6 +161,15 @@ BEGIN
    END//
 DELIMITER ;
 
+DELIMITER //
+CREATE PROCEDURE `USP_MDL_ResulCursObjetivo_TrexCod_Curso`(
+   IN pCod_Curso varchar(16))
+BEGIN
+   SELECT Cod_ResulCursObjetivo AS value, Cod_ResulCursObjetivo AS label
+   FROM mdl_ResulCursObjetivo
+   where Cod_Curso=pCod_Curso;
+   END//
+DELIMITER ;
 -- Volcando estructura para procedimiento reepis.USP_MDL_ResulCursObjetivo_TU
 DELIMITER //
 CREATE PROCEDURE `USP_MDL_ResulCursObjetivo_TU`(
@@ -222,7 +231,7 @@ SET
 Cod_IndicarResultado=pCod_IndicarResultado,
 Cod_Resultado=pCod_Resultado,
 Cod_Indicador=pCod_Indicador,
-Cod_Curso=pCod_Cursoo
+Cod_Curso=pCod_Curso
 WHERE (Cod_IndicarResultado=pCod_IndicarResultado);
 END IF;
 END//
@@ -244,6 +253,16 @@ BEGIN
    SELECT *
    FROM mdl_IndRecursobjetivo
    where Cod_IndicarResultado=pCod_IndicarResultado;
+   END//
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE  `USP_MDL_IndRecursobjetivo_TxCod_Curso`(
+   IN pCod_Curso VARCHAR(16))
+BEGIN
+   SELECT *
+   FROM mdl_IndRecursobjetivo
+   where Cod_Curso=pCod_Curso;
    END//
 DELIMITER ;
 

@@ -24,6 +24,49 @@ router.get("/List", async function(req, res, next) {
   }
 });
 
+router.post("/ListInxRe", async function(req, res, next) {
+  const { Cod_ResulCursObjetivo } = req.body;
+  try {
+    const TresultadoIndicador = await IndicadorServicio.TraerUno(
+      "CALL USP_MDL_INDICADOR_TxCod_Resultado(?)",
+      [Cod_ResulCursObjetivo]
+    ).then(resultadoIndicador => {
+      if (resultadoIndicador[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          ResultadoIndicadors: resultadoIndicador[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/ListCom", async function(req, res, next) {
+  try {
+    const Tindicador = await IndicadorServicio.TraerTodos(
+      "CALL USP_MDL_INDICADOR_TT_CodDesc"
+    ).then(indicadores => {
+      if (indicadores[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          Indicadores: indicadores[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.get("/:Cod_Indicador", async function(req, res, next) {
   const { Cod_Indicador } = req.params;
