@@ -884,7 +884,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_IndRecursobjetivo_G`(
 IN pCod_IndicarResultado VARCHAR(16),
 IN pCod_Resultado VARCHAR(16),
 IN pCod_Indicador VARCHAR(16),
-IN Cod_Curso VARCHAR(16)
+IN pCod_Curso VARCHAR(16)
 )
 BEGIN
 IF NOT EXISTS (SELECT Cod_IndicarResultado FROM mdl_IndRecursobjetivo WHERE Cod_IndicarResultado = pCod_IndicarResultado)

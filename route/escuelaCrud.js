@@ -89,8 +89,8 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/Del:Cod_Escuela", async function(req, res, next) {
-  const { Cod_Escuela } = req.params;
+router.delete("/Del", async function(req, res, next) {
+  const { Cod_Escuela } = req.body;
   try {
     const Eescuela = await EscuelaServicio.Eliminar(
       "CALL USP_MDL_ESCUELA_E(?)",
@@ -106,7 +106,6 @@ router.delete("/Del:Cod_Escuela", async function(req, res, next) {
           Codigo: 1
         });
       }
-      console.log(escuela);
     });
   } catch (err) {
     next(err);

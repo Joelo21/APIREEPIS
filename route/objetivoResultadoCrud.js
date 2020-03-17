@@ -70,7 +70,6 @@ router.post("/ListRExCod_Curso", async function(req, res, next) {
   }
 });
 
-
 router.get("/:Cod_objetivoResultado", async function(req, res, next) {
   const { Cod_objetivoResultado } = req.params;
   try {
@@ -95,11 +94,11 @@ router.get("/:Cod_objetivoResultado", async function(req, res, next) {
 });
 
 router.post("/Guardar", async function(req, res, next) {
-  const { 
-    Cod_ResulCursObjetivo, 
-    Cod_Objetivo, 
+  const {
+    Cod_ResulCursObjetivo,
+    Cod_Objetivo,
     Cod_Resultado,
-    Cod_Curso 
+    Cod_Curso
   } = req.body;
   try {
     const GobjetivoResultado = await ObjetivoResultadoServicio.Guardar(
@@ -116,8 +115,8 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/Del:Cod_objetivoResultado", async function(req, res, next) {
-  const { Cod_objetivoResultado } = req.params;
+router.delete("/Del", async function(req, res, next) {
+  const { Cod_objetivoResultado } = req.body;
   try {
     const EobjetivoResultado = await ObjetivoResultadoServicio.Eliminar(
       "CALL USP_MDL_ResulCursObjetivo_E(?)",

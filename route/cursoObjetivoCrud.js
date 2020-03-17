@@ -94,11 +94,7 @@ router.get("/:Cod_CursoObjetivo", async function(req, res, next) {
 });
 
 router.post("/Guardar", async function(req, res, next) {
-  const { 
-    Cod_CursoObjetivo, 
-    Cod_Objetivo, 
-    Cod_Curso 
-  } = req.body;
+  const { Cod_CursoObjetivo, Cod_Objetivo, Cod_Curso } = req.body;
   try {
     const GcursoObjetivo = await CursoObjetivoServicio.Guardar(
       "CALL USP_MDL_CURSOBJETIVO_G(?,?,?)",
@@ -114,8 +110,8 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/Del:Cod_CursoObjetivo", async function(req, res, next) {
-  const { Cod_CursoObjetivo } = req.params;
+router.delete("/Del", async function(req, res, next) {
+  const { Cod_CursoObjetivo } = req.body;
   try {
     const EcursoObjetivo = await CursoObjetivoServicio.Eliminar(
       "CALL USP_MDL_CURSOBJETIVO_E(?)",

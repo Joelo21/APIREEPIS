@@ -124,8 +124,8 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/Del:Cod_Indicador", async function(req, res, next) {
-  const { Cod_Indicador } = req.params;
+router.delete("/Del", async function(req, res, next) {
+  const { Cod_Indicador } = req.body;
 
   try {
     const Eindicador = await IndicadorServicio.Eliminar(

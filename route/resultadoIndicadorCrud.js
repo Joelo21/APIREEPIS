@@ -92,12 +92,12 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/Del:Cod_IndicarResultado", async function(req, res, next) {
-  const { Cod_IndicarResultado } = req.params;
+router.delete("/Del", async function(req, res, next) {
+  const { Cod_IndicarResultado } = req.body;
   try {
     const EresultadoIndicador = await ResultadoIndicadorServicio.Eliminar(
       "CALL USP_MDL_IndRecursobjetivo_E(?)",
-      [Cod_IndicarResultado]
+      [Cod_IndicarResultado]  
     ).then(resultadoIndicador => {
       if (resultadoIndicador.affectedRows === 0) {
         res.json({

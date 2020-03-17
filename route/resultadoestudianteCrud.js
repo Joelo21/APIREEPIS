@@ -97,8 +97,8 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/Del:Cod_Resultado", async function(req, res, next) {
-  const { Cod_Resultado } = req.params;
+router.delete("/Del", async function(req, res, next) {
+  const { Cod_Resultado } = req.body;
 
   try {
     const Eresutado = await ResultadoServicio.Eliminar(
@@ -115,7 +115,6 @@ router.delete("/Del:Cod_Resultado", async function(req, res, next) {
           Codigo: 1
         });
       }
-      console.log(resultado);
     });
   } catch (err) {
     next(err);

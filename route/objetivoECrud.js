@@ -90,8 +90,8 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/Del:Cod_Objetivo", async function(req, res, next) {
-  const { Cod_Objetivo } = req.params;
+router.delete("/Del", async function(req, res, next) {
+  const { Cod_Objetivo } = req.body;
   try {
     const Eobjetivo = await ObjetivoServicio.Eliminar(
       "CALL USP_MDL_OBJETIVOEDUCACIONAL_E(?)",
