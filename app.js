@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 const bodyParser=require('body-parser');
-var AsignaturaCrud = require('./route/asignacionCrud');
+var AsignacionCrud = require('./route/asignacionCrud');
 var CriterioCrud = require('./route/criterioCrud');
 var CursoCrud = require('./route/cursoCrud');
 var EscuelaCrud = require('./route/escuelaCrud');
@@ -18,6 +18,9 @@ var RubricaCrud = require('./route/rubricaCrud');
 var CursoObjetivoCrud = require('./route/cursoObjetivoCrud');
 var ObjetivoResultadoCrud = require('./route/objetivoResultadoCrud');
 var ResultadoIndicadorCrud = require('./route/resultadoIndicadorCrud');
+var GRubricaCrud = require('./route/grubricaCrud');
+var GCriterioCrud = require('./route/gcriterioCrud');
+
 
 var app = express();
 const cors=require("cors");
@@ -29,7 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/AsignaturaCrud',AsignaturaCrud);
+app.use('/AsignacionCrud',AsignacionCrud);
 app.use('/CriterioCrud',CriterioCrud);
 app.use('/CursoCrud',CursoCrud);
 app.use('/EscuelaCrud',EscuelaCrud);
@@ -43,6 +46,8 @@ app.use('/RubricaCrud',RubricaCrud);
 app.use('/CursoObjetivoCrud',CursoObjetivoCrud);
 app.use('/ObjetivoResultadoCrud',ObjetivoResultadoCrud);
 app.use('/ResultadoIndicadorCrud',ResultadoIndicadorCrud);
+app.use('/GRubricaCrud',GRubricaCrud);
+app.use('/GCriterioCrud',GCriterioCrud);
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());

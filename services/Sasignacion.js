@@ -1,6 +1,6 @@
 const Mysqlib = require("../lib/Mysql");
 
-class SAsignatura
+class SAsignacion
 {
   constructor()
     {
@@ -35,6 +35,6 @@ class SAsignatura
 
 }
 
-module.exports=SAsignatura;
+module.exports=SAsignacion;
 
 

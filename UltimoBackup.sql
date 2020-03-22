@@ -22,11 +22,14 @@ DROP TABLE IF EXISTS `mdl_asignacion`;
 CREATE TABLE IF NOT EXISTS `mdl_asignacion` (
   `Cod_Curso` varchar(8) DEFAULT NULL,
   `Cod_Asignacion` varchar(8) NOT NULL,
+  `Id_Asignacion` varchar(8) NOT NULL,
   `NomAsignacion` varchar(1024) NOT NULL,
   `TipoAsignacion` varchar(200) DEFAULT NULL,
   `Participantes` int(11) DEFAULT NULL,
   `Presentados` int(11) DEFAULT NULL,
   `Pendientes` int(11) DEFAULT NULL,
+  `Cod_Unidad` varchar(8) DEFAULT NULL,
+  `Flag_Activo` bool DEFAULT NULL,
   PRIMARY KEY (`Cod_Asignacion`),
   KEY `Cod_Curso` (`Cod_Curso`),
   CONSTRAINT `mdl_asignacion_ibfk_1` FOREIGN KEY (`Cod_Curso`) REFERENCES `mdl_curso` (`Cod_Curso`)
@@ -42,6 +45,7 @@ DROP TABLE IF EXISTS `mdl_criterio`;
 CREATE TABLE IF NOT EXISTS `mdl_criterio` (
   `Cod_Rubrica` varchar(8) NOT NULL,
   `Cod_Criterio` varchar(8) NOT NULL,
+  `NivelCriterio` varchar(8) NOT NULL,
   `DesCriterio` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Cod_Criterio`),
   KEY `Cod_Rubrica` (`Cod_Rubrica`),
@@ -52,6 +56,23 @@ CREATE TABLE IF NOT EXISTS `mdl_criterio` (
 DELETE FROM `mdl_criterio`;
 /*!40000 ALTER TABLE `mdl_criterio` DISABLE KEYS */;
 /*!40000 ALTER TABLE `mdl_criterio` ENABLE KEYS */;
+
+-- Volcando estructura para tabla reepis.mdl_gcriterio
+DROP TABLE IF EXISTS `mdl_gcriterio`;
+CREATE TABLE IF NOT EXISTS `mdl_gcriterio` (
+  `Cod_Rubrica` varchar(8) NOT NULL,
+  `Cod_Criterio` varchar(8) NOT NULL,
+  `NivelCriterio` varchar(8) NOT NULL,
+  `DesCriterio` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Criterio`),
+  KEY `Cod_Rubrica` (`Cod_Rubrica`),
+  CONSTRAINT `mdl_gcriterio_ibfk_1` FOREIGN KEY (`Cod_Rubrica`) REFERENCES `mdl_grubrica` (`Cod_Rubrica`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla reepis.mdl_gcriterio: ~0 rows (aproximadamente)
+DELETE FROM `mdl_gcriterio`;
+/*!40000 ALTER TABLE `mdl_gcriterio` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mdl_gcriterio` ENABLE KEYS */;
 
 -- Volcando estructura para tabla reepis.mdl_curso
 DROP TABLE IF EXISTS `mdl_curso`;
@@ -211,9 +232,14 @@ DELETE FROM `mdl_matricula`;
 DROP TABLE IF EXISTS `mdl_nivel`;
 CREATE TABLE IF NOT EXISTS `mdl_nivel` (
   `Cod_Nivel` varchar(8) NOT NULL,
+  `Cod_Criterio` varchar(8) NOT NULL,
   `Descripcion` varchar(10) DEFAULT NULL,
-  `Puntaje` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Cod_Nivel`)
+  `Puntaje` int DEFAULT NULL,
+  `PuntajeObtenido` int DEFAULT NULL,
+  `PuntajeFinal` int DEFAULT NULL,
+  PRIMARY KEY (`Cod_Nivel`),
+  KEY `Cod_Criterio` (`Cod_Criterio`),
+  CONSTRAINT `mdl_nivel_ibfk_1` FOREIGN KEY (`Cod_Criterio`) REFERENCES `mdl_criterio` (`Cod_Criterio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla reepis.mdl_nivel: ~3 rows (aproximadamente)
@@ -308,19 +334,42 @@ CREATE TABLE IF NOT EXISTS `mdl_rubrica` (
   `Cod_Rubrica` varchar(8) NOT NULL,
   `Cod_Asignacion` varchar(8) DEFAULT NULL,
   `Cod_Persona` varchar(8) DEFAULT NULL,
+  `Cod_Curso` varchar(8) DEFAULT NULL,
   `NomRubrica` varchar(30) DEFAULT NULL,
-  `Nota` int(11) DEFAULT NULL,
+  `Descripcion` VARCHAR(1024) DEFAULT NULL,
+  `Nota` int DEFAULT NULL,
   PRIMARY KEY (`Cod_Rubrica`),
   KEY `Cod_Asignacion` (`Cod_Asignacion`),
   KEY `Cod_Persona` (`Cod_Persona`),
+  KEY `Cod_Curso` (`Cod_Curso`),
   CONSTRAINT `mdl_rubrica_ibfk_1` FOREIGN KEY (`Cod_Asignacion`) REFERENCES `mdl_asignacion` (`Cod_Asignacion`),
-  CONSTRAINT `mdl_rubrica_ibfk_2` FOREIGN KEY (`Cod_Persona`) REFERENCES `mdl_persona` (`Cod_Persona`)
+  CONSTRAINT `mdl_rubrica_ibfk_2` FOREIGN KEY (`Cod_Persona`) REFERENCES `mdl_persona` (`Cod_Persona`),
+  CONSTRAINT `mdl_rubrica_ibfk_3` FOREIGN KEY (`Cod_Curso`) REFERENCES `mdl_curso` (`Cod_Curso`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla reepis.mdl_rubrica: ~0 rows (aproximadamente)
 DELETE FROM `mdl_rubrica`;
 /*!40000 ALTER TABLE `mdl_rubrica` DISABLE KEYS */;
 /*!40000 ALTER TABLE `mdl_rubrica` ENABLE KEYS */;
+
+-- Volcando estructura para tabla reepis.mdl_grubrica
+DROP TABLE IF EXISTS `mdl_grubrica`;
+CREATE TABLE IF NOT EXISTS `mdl_grubrica` (
+  `Cod_Rubrica` varchar(8) NOT NULL,
+  `Cod_Asignacion` varchar(8) DEFAULT NULL,
+  `Cod_Curso` varchar(8) DEFAULT NULL,
+  `NomRubrica` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`Cod_Rubrica`),
+  KEY `Cod_Asignacion` (`Cod_Asignacion`),
+  KEY `Cod_Curso` (`Cod_Curso`),
+  CONSTRAINT `mdl_grubrica_ibfk_1` FOREIGN KEY (`Cod_Asignacion`) REFERENCES `mdl_asignacion` (`Cod_Asignacion`),
+  CONSTRAINT `mdl_grubrica_ibfk_2` FOREIGN KEY (`Cod_Curso`) REFERENCES `mdl_curso` (`Cod_Curso`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla reepis.mdl_grubrica: ~0 rows (aproximadamente)
+DELETE FROM `mdl_grubrica`;
+/*!40000 ALTER TABLE `mdl_grubrica` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mdl_grubrica` ENABLE KEYS */;
 
 -- Volcando estructura para función reepis.TraerCod_Escuela
 DROP FUNCTION IF EXISTS `TraerCod_Escuela`;
@@ -333,12 +382,11 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_ASIGNACION_E`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ASIGNACION_E`(
-	IN pCod_Asignacion varchar(8),
-	 IN pCod_Curso VARCHAR (8)
+	IN pCod_Asignacion varchar(8)
 	)
 BEGIN
 	DELETE FROM mdl_asignacion
-	WHERE (Cod_Asignacion=pCod_Asignacion) AND (Cod_Curso=pCod_Curso);
+	WHERE (Cod_Asignacion=pCod_Asignacion);
 END//
 DELIMITER ;
 
@@ -348,11 +396,14 @@ DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ASIGNACION_G`(
 IN pCod_Curso varchar(8),
 IN pCod_Asignacion varchar(8),
+IN pId_Asignacion VARCHAR(8),
 IN pNomAsignacion varchar(1024),
 IN pTipoAsignacion varchar(200),
 IN pParticipantes INT,
 IN pPresentados INT,
-IN pPendientes INT
+IN pPendientes INT,
+IN pCod_Unidad VARCHAR(8),
+IN pFlag_Activo BOOL
 )
 BEGIN
 IF NOT EXISTS (SELECT pCod_Asignacion, pCod_Curso FROM mdl_Asignacion WHERE ((Cod_Asignacion = pCod_Asignacion) AND (Cod_Curso= pCod_Curso)))
@@ -360,31 +411,40 @@ THEN
 INSERT INTO mdl_Asignacion (
 Cod_Curso,
 Cod_Asignacion,
+Id_Asignacion,
 NomAsignacion,
 TipoAsignacion,
 Participantes,
 Presentados,
-Pendientes
+Pendientes,
+Cod_Unidad,
+Flag_Activo
 )
 VALUES (
 pCod_Curso,
 pCod_Asignacion,
+pId_Asignacion,
 pNomAsignacion,
 pTipoAsignacion,
 pParticipantes,
 pPresentados,
-pPendientes
+pPendientes,
+pCod_Unidad,
+pFlag_Activo
 );
 ELSE
 UPDATE mdl_Asignacion
 SET
 Cod_Curso=pCod_Curso,
 Cod_Asignacion=pCod_Asignacion,
+Id_Asignacion=pId_Asignacion,
 NomAsignacion=pNomAsignacion,
 TipoAsignacion=pTipoAsignacion,
 Participantes=pParticipantes,
 Presentados=pPresentados,
-Pendientes=pPendientes
+Pendientes=pPendientes,
+Cod_Unidad= pCod_Unidad,
+Flag_Activo=pFlag_Activo
 WHERE (Cod_Asignacion = pCod_Asignacion) AND (Cod_Curso = pCod_Curso);
 END IF;
 END//
@@ -403,13 +463,12 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_ASIGNACION_TU`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ASIGNACION_TU`(
-   IN pCod_Asignacion varchar(8),
-	IN pCod_Resultado varchar(8)
+   IN pCod_Asignacion varchar(8)
 	)
 BEGIN
    SELECT *
    FROM mdl_asignacion
-   WHERE (Cod_Asignacion=pCod_Asignacion) AND (Cod_Resultado=pCod_Resultado);
+   WHERE (Cod_Asignacion=pCod_Asignacion);
    END//
 DELIMITER ;
 
@@ -431,6 +490,7 @@ DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_CRITERIO_G`(
 IN pCod_Rubrica VARCHAR(8),
 IN pCod_Criterio VARCHAR(8),
+IN pNivelCriterio VARCHAR(8),
 IN pDesCriterio VARCHAR(20)
 )
 BEGIN
@@ -439,11 +499,13 @@ THEN
 INSERT INTO mdl_Criterio(
 Cod_Rubrica,
 DesCriterio,
+NivelCriterio,
 Cod_Criterio
 )
 VALUES (
 pCod_Rubrica,
 pDesCriterio,
+pNivelCriterio,
 pCod_Criterio
 );
 ELSE
@@ -451,6 +513,7 @@ UPDATE mdl_Criterio
 SET
 Cod_Rubrica=pCod_Rubrica,
 DesCriterio=pDesCriterio,
+NivelCriterio=pNivelCriterio,
 Cod_Criterio=pCod_Criterio
 WHERE (Cod_Rubrica=pCod_Rubrica);
 END IF;
@@ -474,6 +537,75 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_CRITERIO_TU`(
 BEGIN
    SELECT *
    FROM mdl_Criterio
+   where Id_Rubrica=pId_Rubrica;
+   END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_GCRITERIO_E
+DROP PROCEDURE IF EXISTS `USP_MDL_GCRITERIO_E`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GCRITERIO_E`(
+   IN pCod_Criterio varchar(8)
+   )
+BEGIN
+   DELETE FROM MDL_GCRITERIO
+   WHERE (Cod_Criterio = pCod_Criterio);
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_GCRITERIO_G
+DROP PROCEDURE IF EXISTS `USP_MDL_GCRITERIO_G`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GCRITERIO_G`(
+IN pCod_Rubrica VARCHAR(8),
+IN pCod_Criterio VARCHAR(8),
+IN pNivelCriterio VARCHAR(8),
+IN pDesCriterio VARCHAR(20)
+)
+BEGIN
+IF NOT EXISTS (SELECT pCod_Rubrica FROM MDL_GCRITERIO WHERE Cod_Rubrica = pCod_Rubrica)
+THEN
+INSERT INTO MDL_GCRITERIO(
+Cod_Rubrica,
+DesCriterio,
+NivelCriterio,
+Cod_Criterio
+)
+VALUES (
+pCod_Rubrica,
+pDesCriterio,
+pNivelCriterio,
+pCod_Criterio
+);
+ELSE
+UPDATE MDL_GCRITERIO
+SET
+Cod_Rubrica=pCod_Rubrica,
+DesCriterio=pDesCriterio,
+NivelCriterio=pNivelCriterio,
+Cod_Criterio=pCod_Criterio
+WHERE (Cod_Rubrica=pCod_Rubrica);
+END IF;
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_GCRITERIO_TT
+DROP PROCEDURE IF EXISTS `USP_MDL_GCRITERIO_TT`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GCRITERIO_TT`()
+BEGIN
+	SELECT * FROM MDL_GCRITERIO;
+	END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_GCRITERIO_TU
+DROP PROCEDURE IF EXISTS `USP_MDL_GCRITERIO_TU`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GCRITERIO_TU`(
+   IN pId_Rubrica INT)
+BEGIN
+   SELECT *
+   FROM MDL_GCRITERIO
    where Id_Rubrica=pId_Rubrica;
    END//
 DELIMITER ;
@@ -1039,28 +1171,40 @@ DROP PROCEDURE IF EXISTS `USP_MDL_NIVEL_G`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_NIVEL_G`(
 IN pCod_Nivel VARCHAR(8),
+IN pCod_Criterio VARCHAR(8),
 IN pDescripcion VARCHAR(10),
-IN pPuntaje INT
+IN pPuntaje INT,
+IN pPuntajeOb INT,
+IN pPuntajeFinal INT
 )
 BEGIN
 IF NOT EXISTS (SELECT pCod_Nivel  FROM mdl_Nivel WHERE  (Cod_Nivel=pCod_Nivel))
 THEN
 INSERT INTO mdl_Nivel(
 Cod_Nivel,
+Cod_Criterio,
 Descripcion,
-Puntaje
+Puntaje,
+PuntajeOb,
+PuntajeFinal
 )
 VALUES (
 pCod_Nivel,
+pCod_Criterio,
 pDescripcion,
-pPuntaje
+pPuntaje,
+pPuntajeOb,
+pPuntajeFinal
 );
 ELSE
 UPDATE mdl_Nivel
 SET
 Cod_Nivel=pCod_Nivel,
+Cod_Criterio=pCod_Criterio,
 Descripcion=pDescripcion,
-Puntaje=pPuntaje
+Puntaje=pPuntaje,
+PuntajeOb=pPuntajeOb,
+PuntajeFinal=pPuntajeFinal
 WHERE (Cod_Nivel=pCod_Nivel);
 END IF;
 END//
@@ -1432,7 +1576,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_RUBRICA_G`(
 IN pCod_Rubrica VARCHAR(8),
 IN pCod_Asignacion VARCHAR(8),
 IN pCod_Persona VARCHAR(8),
+IN pCod_Curso VARCHAR(8), 
 IN pNomRubrica VARCHAR(30),
+IN pDescripcion VARCHAR(1024),
 IN pNota INT
 )
 BEGIN
@@ -1442,14 +1588,18 @@ INSERT INTO mdl_Rubrica(
 Cod_Rubrica,
 Cod_Asignacion,
 Cod_Persona,
+Cod_Curso,
 NomRubrica,
+Descripcion,
 Nota
 )
 VALUES (
 pCod_Rubrica,
 pCod_Asignacion,
 pCod_Persona,
+pCod_Curso,
 pNomRubrica,
+pCod_Curso,
 pNota
 );
 ELSE
@@ -1458,7 +1608,9 @@ SET
 Cod_Rubrica=pCod_Rubrica,
 Cod_Asignacion=pCod_Asignacion,
 Cod_Persona=pCod_Persona,
+Cod_Curso=pCod_Curso,
 NomRubrica=pNomRubrica,
+Cod_Curso=pCod_Curso,
 Nota=pNota
 WHERE ((Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion) AND (Cod_Persona = pCod_Persona));
 END IF;
@@ -1479,16 +1631,86 @@ DROP PROCEDURE IF EXISTS `USP_MDL_RUBRICA_TU`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_RUBRICA_TU`(
    IN pCod_Rubrica VARCHAR(8),
-   IN pCod_Asignacion VARCHAR(8),
-   IN pCod_Persona VARCHAR(8)
+   IN pCod_Asignacion VARCHAR(8)
    )
 BEGIN
    SELECT *
    FROM mdl_Rubrica
-   WHERE ((Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion) AND (Cod_Persona = pCod_Persona));
+   WHERE ((Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion));
 END//
 DELIMITER ;
 
+-- Volcando estructura para procedimiento reepis.USP_MDL_GRUBRICA_E
+DROP PROCEDURE IF EXISTS `USP_MDL_GRUBRICA_E`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GRUBRICA_E`(
+ IN pCod_Rubrica VARCHAR(8),
+ IN pCod_Asignacion VARCHAR(8)
+   )
+BEGIN
+   DELETE FROM MDL_GRUBRICA
+   WHERE ((Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion));
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_GRUBRICA_G
+DROP PROCEDURE IF EXISTS `USP_MDL_GRUBRICA_G`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GRUBRICA_G`(
+IN pCod_Rubrica VARCHAR(8),
+IN pCod_Asignacion VARCHAR(8),
+IN pCod_Curso VARCHAR(8), 
+IN pNomRubrica VARCHAR(30)
+)
+BEGIN
+IF NOT EXISTS (SELECT pCod_Rubrica, pCod_Asignacion FROM MDL_GRUBRICA WHERE ( (Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion)))
+THEN
+INSERT INTO MDL_GRUBRICA(
+Cod_Rubrica,
+Cod_Asignacion,
+Cod_Curso,
+NomRubrica
+)
+VALUES (
+pCod_Rubrica,
+pCod_Asignacion,
+pCod_Curso,
+pNomRubrica
+);
+ELSE
+UPDATE MDL_GRUBRICA
+SET
+Cod_Rubrica=pCod_Rubrica,
+Cod_Asignacion=pCod_Asignacion,
+Cod_Curso=pCod_Curso,
+NomRubrica=pNomRubrica
+WHERE ((Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion));
+END IF;
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_GRUBRICA_TT
+DROP PROCEDURE IF EXISTS `USP_MDL_GRUBRICA_TT`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GRUBRICA_TT`()
+BEGIN
+	SELECT * FROM MDL_GRUBRICA;
+	END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_GRUBRICA_TU
+DROP PROCEDURE IF EXISTS `USP_MDL_GRUBRICA_TU`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GRUBRICA_TU`(
+   IN pCod_Rubrica VARCHAR(8),
+   IN pCod_Asignacion VARCHAR(8)
+   )
+BEGIN
+   SELECT *
+   FROM MDL_GRUBRICA
+   WHERE ((Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion));
+END//
+DELIMITER ;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

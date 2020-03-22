@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const CAsignaturasServicio = require("../services/Sasignatura");
-const AsignaturaServicio = new CAsignaturasServicio();
+const CAsignacionServicio = require("../services/Sasignacion");
+const AsignacionServicio = new CAsignacionServicio();
 
 router.get("/List", async function(req, res, next) {
   try {
-    const Tasignaturas = await AsignaturaServicio.TraerTodos(
+    const Tasignaturas = await AsignacionServicio.TraerTodos(
       "CALL USP_MDL_ASIGNACION_TT"
     ).then(asignatura => {
       if (asignatura[0].length === 0) {
@@ -24,14 +24,13 @@ router.get("/List", async function(req, res, next) {
   }
 });
 
-router.get("/id", async function(req, res, next) {
-  const { Cod_Asignacion } = req.body;
-  const { Id_Resultado } = req.body;
+router.get("/:Cod_Asignacion", async function(req, res, next) {
+  const { Cod_Asignacion } = req.params;
 
   try {
-    const TUasignatura = await AsignaturaServicio.TraerUno(
-      "CALL USP_MDL_ASIGNACION_TU(?,?)",
-      [Cod_Asignacion, Id_Resultado]
+    const TUasignatura = await AsignacionServicio.TraerUno(
+      "CALL USP_MDL_ASIGNACION_TU(?)",
+      [Cod_Asignacion]
     ).then(asignatura => {
       if (asignatura[0].length === 0) {
         res.json({
@@ -49,44 +48,64 @@ router.get("/id", async function(req, res, next) {
   }
 });
 
+router.post("/GParticipantes", async function(req, res, next) {
+  const {
+    Cod_Asignacion,
+    Participantes,
+    Presentados,
+    Pendientes   
+  } = req.body;
+
+  try {
+    const Gasignatura = await AsignacionServicio.Guardar(
+      "CALL USP_MDL_ASIGNACION_GxParticipantes(?,?,?,?)",
+      [
+        Cod_Asignacion,
+        Participantes,
+        Presentados,
+        Pendientes,
+      ]
+    ).then(asignaturas => {
+      res.status(201).json({
+        Asignaturas: asignaturas[0],
+        Mensaje: "Asignatura participantes Guardada"
+      });
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post("/Guardar", async function(req, res, next) {
   const {
-    Id_Asignacion,
-    Id_Escuela,
-    Id_Curso,
-    Id_Resultado,
+    Cod_Curso,    
     Cod_Asignacion,
+    Id_Asignacion,
     NomAsignacion,
     TipoAsignacion,
     Participantes,
     Presentados,
     Pendientes,
-    Flag_Alta,
-    Flag_Activo,
-    Fecha_Limite,
-    Cod_UsuarioReg
+    Cod_Unidad,
+    Flag_Activo    
   } = req.body;
 
   try {
-    const Gasignatura = await AsignaturaServicio.Guardar(
-      "CALL USP_MDL_ASIGNACION_G(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    const Gasignatura = await AsignacionServicio.Guardar(
+      "CALL USP_MDL_ASIGNACION_G(?,?,?,?,?,?,?,?,?,?)",
       [
-        Id_Asignacion,
-        Id_Escuela,
-        Id_Curso,
-        Id_Resultado,
+        Cod_Curso,
         Cod_Asignacion,
+        Id_Asignacion,
         NomAsignacion,
         TipoAsignacion,
         Participantes,
         Presentados,
         Pendientes,
-        Flag_Alta,
-        Flag_Activo,
-        Fecha_Limite,
-        Cod_UsuarioReg
+        Cod_Unidad,
+        Flag_Activo
       ]
-    ).then(asignaturaG => {
+    ).then(asignaturas => {
       res.status(201).json({
         Asignaturas: asignaturas[0],
         Mensaje: "Asignatura Guardada"
@@ -97,20 +116,24 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/", async function(req, res, next) {
+router.delete("/Del", async function(req, res, next) {
   const { Cod_Asignacion } = req.body;
-  const { Id_Resultado } = req.body;
 
   try {
-    console.log("1 paso");
-    const asds = await AsignaturaServicio.Eliminar(
-      "CALL USP_MDL_ASIGNACION_E(?,?)",
-      [Cod_Asignacion, Id_Resultado]
-    ).then(aas => {
-      res.status(201).json({
-        Asignaturas: asignaturas[0],
-        Mensaje: "Asignatura Eliminada"
-      });
+    const asds = await AsignacionServicio.Eliminar(
+      "CALL USP_MDL_ASIGNACION_E(?)",
+      [Cod_Asignacion]
+    ).then(asignacion => {
+      if (asignacion.affectedRows === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(201).json({
+          ObjetivoResultado: "Objetivo  Resutado Eliminada",
+          Codigo: 1
+        });
+      }
     });
   } catch (err) {
     next(err);
