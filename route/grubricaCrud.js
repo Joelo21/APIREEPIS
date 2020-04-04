@@ -8,13 +8,13 @@ router.get("/List", async function(req, res, next) {
     const Trubrica = await GRubricaServicio.TraerTodos(
       "CALL USP_MDL_GRUBRICA_TT"
     ).then(rubricas => {
-      if (grubrica[0].length === 0) {
+      if (rubricas[0].length === 0) {
         res.json({
           Codigo: 0
         });
       } else {
         res.status(200).json({
-          Grubrica: grubrica[0],
+          Grubrica: rubricas[0],
           Codigo: 1
         });
       }

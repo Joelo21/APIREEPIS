@@ -43,13 +43,13 @@ DELETE FROM `mdl_asignacion`;
 -- Volcando estructura para tabla reepis.mdl_criterio
 DROP TABLE IF EXISTS `mdl_criterio`;
 CREATE TABLE IF NOT EXISTS `mdl_criterio` (
-  `Cod_Rubrica` varchar(8) NOT NULL,
-  `Cod_Criterio` varchar(8) NOT NULL,
+  `Cod_RubricaPersona` VARCHAR(16) NOT NULL,
+  `Cod_Criterio` VARCHAR(16) NOT NULL,
   `NivelCriterio` varchar(8) NOT NULL,
   `DesCriterio` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`Cod_Criterio`),
-  KEY `Cod_Rubrica` (`Cod_Rubrica`),
-  CONSTRAINT `mdl_criterio_ibfk_1` FOREIGN KEY (`Cod_Rubrica`) REFERENCES `mdl_rubrica` (`Cod_Rubrica`)
+  KEY `Cod_RubricaPersona` (`Cod_RubricaPersona`),
+  CONSTRAINT `mdl_criterio_ibfk_1` FOREIGN KEY (`Cod_RubricaPersona`) REFERENCES `mdl_rubrica` (`Cod_RubricaPersona`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla reepis.mdl_criterio: ~0 rows (aproximadamente)
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `mdl_gcriterio` (
   `Cod_Rubrica` varchar(8) NOT NULL,
   `Cod_Criterio` varchar(8) NOT NULL,
   `NivelCriterio` varchar(8) NOT NULL,
-  `DesCriterio` varchar(20) DEFAULT NULL,
+  `DesCriterio` VARCHAR(100) DEFAULT NULL,
   PRIMARY KEY (`Cod_Criterio`),
   KEY `Cod_Rubrica` (`Cod_Rubrica`),
   CONSTRAINT `mdl_gcriterio_ibfk_1` FOREIGN KEY (`Cod_Rubrica`) REFERENCES `mdl_grubrica` (`Cod_Rubrica`)
@@ -231,12 +231,12 @@ DELETE FROM `mdl_matricula`;
 -- Volcando estructura para tabla reepis.mdl_nivel
 DROP TABLE IF EXISTS `mdl_nivel`;
 CREATE TABLE IF NOT EXISTS `mdl_nivel` (
-  `Cod_Nivel` varchar(8) NOT NULL,
-  `Cod_Criterio` varchar(8) NOT NULL,
-  `Descripcion` varchar(10) DEFAULT NULL,
-  `Puntaje` int DEFAULT NULL,
-  `PuntajeObtenido` int DEFAULT NULL,
-  `PuntajeFinal` int DEFAULT NULL,
+  `Cod_Nivel` VARCHAR(16) NOT NULL,
+  `Cod_Criterio` VARCHAR(16) NOT NULL,
+  `Descripcion` VARCHAR(1024) DEFAULT NULL,
+  `Puntaje` INT DEFAULT NULL,
+  `PuntajeObtenido` INT DEFAULT NULL,
+  `PuntajeFinal` DECIMAL(10,00) DEFAULT NULL,
   PRIMARY KEY (`Cod_Nivel`),
   KEY `Cod_Criterio` (`Cod_Criterio`),
   CONSTRAINT `mdl_nivel_ibfk_1` FOREIGN KEY (`Cod_Criterio`) REFERENCES `mdl_criterio` (`Cod_Criterio`)
@@ -245,10 +245,7 @@ CREATE TABLE IF NOT EXISTS `mdl_nivel` (
 -- Volcando datos para la tabla reepis.mdl_nivel: ~3 rows (aproximadamente)
 DELETE FROM `mdl_nivel`;
 /*!40000 ALTER TABLE `mdl_nivel` DISABLE KEYS */;
-INSERT INTO `mdl_nivel` (`Cod_Nivel`, `Descripcion`, `Puntaje`) VALUES
-	('N1', 'NIVEL 1', 1),
-	('N2', 'NIVEL 2', 2),
-	('N3', 'NIVEL 3', 3);
+
 /*!40000 ALTER TABLE `mdl_nivel` ENABLE KEYS */;
 
 -- Volcando estructura para tabla reepis.mdl_objetivoeducacional
@@ -331,14 +328,15 @@ INSERT INTO `mdl_resultadoestudiante` (`Cod_Resultado`, `NomResultado`, `Descrip
 -- Volcando estructura para tabla reepis.mdl_rubrica
 DROP TABLE IF EXISTS `mdl_rubrica`;
 CREATE TABLE IF NOT EXISTS `mdl_rubrica` (
+  `Cod_RubricaPersona` VARCHAR(16) NOT NULL,
   `Cod_Rubrica` varchar(8) NOT NULL,
   `Cod_Asignacion` varchar(8) DEFAULT NULL,
   `Cod_Persona` varchar(8) DEFAULT NULL,
   `Cod_Curso` varchar(8) DEFAULT NULL,
-  `NomRubrica` varchar(30) DEFAULT NULL,
+  `NomRubrica` VARCHAR(150) DEFAULT NULL,
   `Descripcion` VARCHAR(1024) DEFAULT NULL,
   `Nota` int DEFAULT NULL,
-  PRIMARY KEY (`Cod_Rubrica`),
+  PRIMARY KEY (`Cod_RubricaPersona`),
   KEY `Cod_Asignacion` (`Cod_Asignacion`),
   KEY `Cod_Persona` (`Cod_Persona`),
   KEY `Cod_Curso` (`Cod_Curso`),
@@ -358,7 +356,7 @@ CREATE TABLE IF NOT EXISTS `mdl_grubrica` (
   `Cod_Rubrica` varchar(8) NOT NULL,
   `Cod_Asignacion` varchar(8) DEFAULT NULL,
   `Cod_Curso` varchar(8) DEFAULT NULL,
-  `NomRubrica` varchar(30) DEFAULT NULL,
+  `NomRubrica` VARCHAR(150) DEFAULT NULL,
   PRIMARY KEY (`Cod_Rubrica`),
   KEY `Cod_Asignacion` (`Cod_Asignacion`),
   KEY `Cod_Curso` (`Cod_Curso`),
@@ -488,34 +486,34 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_CRITERIO_G`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_CRITERIO_G`(
-IN pCod_Rubrica VARCHAR(8),
-IN pCod_Criterio VARCHAR(8),
+IN pCod_RubricaPersona VARCHAR(16),
+IN pCod_Criterio VARCHAR(16),
 IN pNivelCriterio VARCHAR(8),
 IN pDesCriterio VARCHAR(20)
 )
 BEGIN
-IF NOT EXISTS (SELECT pCod_Rubrica FROM mdl_Criterio WHERE Cod_Rubrica = pCod_Rubrica)
+IF NOT EXISTS (SELECT Cod_RubricaPersona FROM mdl_Criterio WHERE Cod_RubricaPersona = pCod_RubricaPersona)
 THEN
 INSERT INTO mdl_Criterio(
-Cod_Rubrica,
-DesCriterio,
+Cod_RubricaPersona,
+Cod_Criterio,
 NivelCriterio,
-Cod_Criterio
+DesCriterio
 )
 VALUES (
-pCod_Rubrica,
-pDesCriterio,
+pCod_RubricaPersona,
+pCod_Criterio,
 pNivelCriterio,
-pCod_Criterio
+pDesCriterio
 );
 ELSE
 UPDATE mdl_Criterio
 SET
-Cod_Rubrica=pCod_Rubrica,
-DesCriterio=pDesCriterio,
+Cod_RubricaPersona=pCod_RubricaPersona,
+Cod_Criterio=pCod_Criterio,
 NivelCriterio=pNivelCriterio,
-Cod_Criterio=pCod_Criterio
-WHERE (Cod_Rubrica=pCod_Rubrica);
+DesCriterio=pDesCriterio
+WHERE (Cod_RubricaPersona=pCod_RubricaPersona);
 END IF;
 END//
 DELIMITER ;
@@ -560,31 +558,31 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GCRITERIO_G`(
 IN pCod_Rubrica VARCHAR(8),
 IN pCod_Criterio VARCHAR(8),
 IN pNivelCriterio VARCHAR(8),
-IN pDesCriterio VARCHAR(20)
+IN pDesCriterio VARCHAR(100)
 )
 BEGIN
-IF NOT EXISTS (SELECT pCod_Rubrica FROM MDL_GCRITERIO WHERE Cod_Rubrica = pCod_Rubrica)
+IF NOT EXISTS (SELECT Cod_Criterio FROM MDL_GCRITERIO WHERE Cod_Criterio = pCod_Criterio)
 THEN
 INSERT INTO MDL_GCRITERIO(
 Cod_Rubrica,
-DesCriterio,
+Cod_Criterio,
 NivelCriterio,
-Cod_Criterio
+DesCriterio
 )
 VALUES (
 pCod_Rubrica,
-pDesCriterio,
+pCod_Criterio,
 pNivelCriterio,
-pCod_Criterio
+pDesCriterio
 );
 ELSE
 UPDATE MDL_GCRITERIO
 SET
 Cod_Rubrica=pCod_Rubrica,
-DesCriterio=pDesCriterio,
+Cod_Criterio=pCod_Criterio,
 NivelCriterio=pNivelCriterio,
-Cod_Criterio=pCod_Criterio
-WHERE (Cod_Rubrica=pCod_Rubrica);
+DesCriterio=pDesCriterio
+WHERE (Cod_Criterio=pCod_Criterio);
 END IF;
 END//
 DELIMITER ;
@@ -1170,12 +1168,12 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_NIVEL_G`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_NIVEL_G`(
-IN pCod_Nivel VARCHAR(8),
-IN pCod_Criterio VARCHAR(8),
-IN pDescripcion VARCHAR(10),
+IN pCod_Nivel VARCHAR(16),
+IN pCod_Criterio VARCHAR(16),
+IN pDescripcion VARCHAR(1024),
 IN pPuntaje INT,
 IN pPuntajeOb INT,
-IN pPuntajeFinal INT
+IN pPuntajeFinal DECIMAL(10,00)
 )
 BEGIN
 IF NOT EXISTS (SELECT pCod_Nivel  FROM mdl_Nivel WHERE  (Cod_Nivel=pCod_Nivel))
@@ -1573,18 +1571,20 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_RUBRICA_G`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_RUBRICA_G`(
+IN pCod_RubricaPersona VARCHAR(16),
 IN pCod_Rubrica VARCHAR(8),
 IN pCod_Asignacion VARCHAR(8),
 IN pCod_Persona VARCHAR(8),
 IN pCod_Curso VARCHAR(8), 
-IN pNomRubrica VARCHAR(30),
+IN pNomRubrica VARCHAR(150),
 IN pDescripcion VARCHAR(1024),
 IN pNota INT
 )
 BEGIN
-IF NOT EXISTS (SELECT pCod_Rubrica, pCod_Asignacion, pCod_Persona FROM mdl_Rubrica WHERE ( (Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion) AND (Cod_Persona = pCod_Persona)))
+IF NOT EXISTS (SELECT Cod_RubricaPersona FROM mdl_Rubrica WHERE ( (Cod_RubricaPersona = pCod_RubricaPersona)))
 THEN
 INSERT INTO mdl_Rubrica(
+Cod_RubricaPersona,
 Cod_Rubrica,
 Cod_Asignacion,
 Cod_Persona,
@@ -1594,25 +1594,27 @@ Descripcion,
 Nota
 )
 VALUES (
+pCod_RubricaPersona,
 pCod_Rubrica,
 pCod_Asignacion,
 pCod_Persona,
 pCod_Curso,
 pNomRubrica,
-pCod_Curso,
+pDescripcion,
 pNota
 );
 ELSE
 UPDATE mdl_Rubrica
 SET
+Cod_RubricaPersona=pCod_RubricaPersona,
 Cod_Rubrica=pCod_Rubrica,
 Cod_Asignacion=pCod_Asignacion,
 Cod_Persona=pCod_Persona,
 Cod_Curso=pCod_Curso,
 NomRubrica=pNomRubrica,
-Cod_Curso=pCod_Curso,
+Descripcion=pDescripcion,
 Nota=pNota
-WHERE ((Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion) AND (Cod_Persona = pCod_Persona));
+WHERE (Cod_RubricaPersona = pCod_RubricaPersona);
 END IF;
 END//
 DELIMITER ;
@@ -1660,7 +1662,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_GRUBRICA_G`(
 IN pCod_Rubrica VARCHAR(8),
 IN pCod_Asignacion VARCHAR(8),
 IN pCod_Curso VARCHAR(8), 
-IN pNomRubrica VARCHAR(30)
+IN pNomRubrica VARCHAR(150)
 )
 BEGIN
 IF NOT EXISTS (SELECT pCod_Rubrica, pCod_Asignacion FROM MDL_GRUBRICA WHERE ( (Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion)))

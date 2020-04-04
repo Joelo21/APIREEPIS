@@ -43,31 +43,25 @@ router.get("/:Cod_Criterio", async function(req, res, next) {
 
 router.post("/Guardar", async function(req, res, next) {
   const { 
-    Cod_Criterio, 
     Cod_Rubrica, 
+    Cod_Criterio, 
     NivelCriterio, 
-    Descripcion 
+    DesCriterio 
   } = req.body;
   try {
     const Gcriterio = await GCriterioServicio.Guardar(
       "CALL USP_MDL_GCRITERIO_G(?,?,?,?)",
-      [
-        Cod_Criterio, 
+      [ 
         Cod_Rubrica, 
+        Cod_Criterio,
         NivelCriterio, 
-        Descripcion
+        DesCriterio
       ]
     ).then(criterio => {
-      if (criterio[0].length === 0) {
-        res.json({
-          Codigo: 0
-        });
-      } else {
-        res.status(200).json({
-          Criterio: criterio[0][0],
-          Codigo: 1
-        });
-      }
+      res.status(201).json({
+        Gcriterio: criterio[0],
+        Mensaje: "Gcriteri guardado"
+      });
     });
   } catch (err) {
     next(err);
