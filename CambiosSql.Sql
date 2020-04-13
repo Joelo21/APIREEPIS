@@ -36,3 +36,17 @@ WHERE (Cod_Asignacion=pCod_Asignacion);
 END//
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS `USP_MDL_ASIGNACION_TxRubrica`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ASIGNACION_TxRubrica`(
+   IN pCod_Curso varchar(8),
+	IN pCod_Asignacion varchar(8),
+	IN pId_Asignacion varchar(8))
+BEGIN
+		SELECT A.Cod_Asignacion, A.Id_Asignacion, GR.NomRubrica, GC.NivelCriterio, GC.DesCriterio FROM mdl_asignacion A
+		INNER JOIN mdl_grubrica AS GR ON A.Cod_Asignacion = GR.Cod_Asignacion AND A.Cod_Curso = GR.Cod_Curso
+		INNER JOIN mdl_gcriterio AS GC ON GR.Cod_Rubrica = GC.Cod_Rubrica
+		WHERE A.Cod_Curso = pCod_Curso AND A.Id_Asignacion = pId_Asignacion AND A.Cod_Asignacion = pCod_Asignacion
+		ORDER BY GC.NivelCriterio ASC;
+   END//
+DELIMITER ; 

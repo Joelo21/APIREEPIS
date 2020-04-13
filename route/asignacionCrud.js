@@ -130,7 +130,30 @@ router.delete("/Del", async function(req, res, next) {
         });
       } else {
         res.status(201).json({
-          ObjetivoResultado: "Objetivo  Resutado Eliminada",
+          Asinacion: "Asigancion  Eliminada",
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/TRubrica", async function(req, res, next) {
+  const { Cod_Curso, Cod_Asignacion , Id_Asignacion} = req.body;
+  try {
+    const TresultadoIndicador = await AsignacionServicio.TraerUno(
+      "CALL USP_MDL_ASIGNACION_TxRubrica(?,?,?)",
+      [Cod_Curso, Cod_Asignacion , Id_Asignacion]
+    ).then(RubricaAsignacion => {
+      if (RubricaAsignacion[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          RubricaAsignacion: RubricaAsignacion[0],
           Codigo: 1
         });
       }

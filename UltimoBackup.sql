@@ -57,6 +57,30 @@ DELETE FROM `mdl_criterio`;
 /*!40000 ALTER TABLE `mdl_criterio` DISABLE KEYS */;
 /*!40000 ALTER TABLE `mdl_criterio` ENABLE KEYS */;
 
+-- Volcando estructura para tabla reepis.mdl_asignacionIndicador
+DROP TABLE IF EXISTS `mdl_asignacionIndicador`;
+CREATE TABLE IF NOT EXISTS `mdl_asignacionIndicador` (
+  `Cod_AsignacionIndicador` VARCHAR(16) NOT NULL,  
+  `Cod_Curso` VARCHAR(8) NOT NULL,
+  `Cod_Asignacion` VARCHAR(8) NOT NULL,
+  `Id_Asignacion` VARCHAR(8) NOT NULL,
+  `NomAsignacion` VARCHAR(1024) NULL,
+  `Cod_Rubrica` VARCHAR(16) NOT NULL,
+  `NomRubrica` VARCHAR(150) NULL,
+  `Cod_Criterio` VARCHAR(8) NOT NULL,
+  `NivelCriterio` VARCHAR(8) DEFAULT NULL,
+  `DesCriterio` VARCHAR(100) DEFAULT NULL,
+  `Cod_IndicarResultado` VARCHAR(16) DEFAULT NULL,
+  `Cod_Resultado` VARCHAR(16) DEFAULT NULL,
+  `Cod_Indicador` VARCHAR(16) DEFAULT NULL,  
+  PRIMARY KEY (`Cod_AsignacionIndicador`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla reepis.mdl_asignacionIndicador: ~0 rows (aproximadamente)
+DELETE FROM `mdl_asignacionIndicador`;
+/*!40000 ALTER TABLE `mdl_asignacionIndicador` DISABLE KEYS */;
+/*!40000 ALTER TABLE `mdl_asignacionIndicador` ENABLE KEYS */;
+
 -- Volcando estructura para tabla reepis.mdl_gcriterio
 DROP TABLE IF EXISTS `mdl_gcriterio`;
 CREATE TABLE IF NOT EXISTS `mdl_gcriterio` (
@@ -1716,3 +1740,114 @@ DELIMITER ;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_mdl_asignacionIndicador_E
+DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_E`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_E`(
+ IN pCod_Rubrica VARCHAR(8)
+   )
+BEGIN
+   DELETE FROM MDL_asignacionIndicador
+   WHERE (Cod_Rubrica = pCod_Rubrica);
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_asignacionIndicador_G
+DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_G`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_G`(
+IN pCod_AsignacionIndicador VARCHAR(16),  
+IN pCod_Curso VARCHAR(8),
+IN pCod_Asignacion VARCHAR(8),
+IN pId_Asignacion VARCHAR(8),
+IN pNomAsignacion VARCHAR(1024),
+IN pCod_Rubrica VARCHAR(16),
+IN pNomRubrica VARCHAR(150),
+IN pCod_Criterio VARCHAR(8),
+IN pNivelCriterio VARCHAR(8),
+IN pDesCriterio VARCHAR(100),
+IN pCod_IndicarResultado VARCHAR(16),
+IN pCod_Resultado VARCHAR(16),
+IN pCod_Indicador VARCHAR(16)
+)
+BEGIN
+IF NOT EXISTS (SELECT Cod_AsignacionIndicador FROM MDL_asignacionIndicador WHERE (Cod_AsignacionIndicador = pCod_AsignacionIndicador) )
+THEN
+INSERT INTO MDL_asignacionIndicador(
+Cod_AsignacionIndicador,  
+Cod_Curso,
+Cod_Asignacion,
+Id_Asignacion,
+NomAsignacion,
+Cod_Rubrica,
+NomRubrica,
+Cod_Criterio,
+NivelCriterio,
+DesCriterio,
+Cod_IndicarResultado,
+Cod_Resultado,
+Cod_Indicador
+)
+VALUES (
+pCod_AsignacionIndicador,  
+pCod_Curso,
+pCod_Asignacion,
+pId_Asignacion,
+pNomAsignacion,
+pCod_Rubrica,
+pNomRubrica,
+pCod_Criterio,
+pNivelCriterio,
+pDesCriterio,
+pCod_IndicarResultado,
+pCod_Resultado,
+pCod_Indicador
+);
+ELSE
+UPDATE MDL_asignacionIndicador
+SET
+Cod_AsignacionIndicador=pCod_AsignacionIndicador,
+Cod_Curso=pCod_Curso,
+Cod_Asignacion=pCod_Asignacion,
+Id_Asignacion=pId_Asignacion,
+NomAsignacion=pNomAsignacion,
+Cod_Rubrica=pCod_Rubrica,
+NomRubrica=pNomRubrica,
+Cod_Criterio=pCod_Criterio,
+NivelCriterio=pNivelCriterio,
+DesCriterio=pDesCriterio,
+Cod_IndicarResultado=pCod_IndicarResultado,
+Cod_Resultado=pCod_Resultado,
+Cod_Indicador=pCod_Indicador
+WHERE (Cod_AsignacionIndicador=pCod_AsignacionIndicador);
+END IF;
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_asignacionIndicador_TT
+DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_TT`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_TT`()
+BEGIN
+	SELECT * FROM MDL_asignacionIndicador;
+	END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento reepis.USP_MDL_asignacionIndicador_TU
+DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_TU`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_TU`(
+   IN pCod_AsignacionIndicador VARCHAR(16)
+   )
+BEGIN
+   SELECT *
+   FROM MDL_asignacionIndicador
+   WHERE (Cod_AsignacionIndicador = pCod_AsignacionIndicador) ;
+END//
+DELIMITER ;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+--
