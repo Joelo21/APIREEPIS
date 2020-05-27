@@ -47,6 +47,30 @@ router.post("/ListreinCod_Curso", async function(req, res, next) {
   }
 });
 
+
+router.post("/ListinCod_Curso", async function(req, res, next) {
+  const { Cod_Curso } = req.body;
+  try {
+    const TresultadoIndicador = await ResultadoIndicadorServicio.TraerUno(
+      "CALL USP_MDL_INDRecursoObjetivo_TxCurso(?)",
+      [Cod_Curso]
+    ).then(resultadoIndicador => {
+      if (resultadoIndicador[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          resultadoIndicadors: resultadoIndicador[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/:Cod_IndicarResultado", async function(req, res, next) {
   const { Cod_IndicarResultado } = req.params;
   try {
