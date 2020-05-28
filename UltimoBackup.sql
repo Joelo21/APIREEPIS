@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `mdl_criterio` (
   `Cod_RubricaPersona` VARCHAR(16) NOT NULL,
   `Cod_Criterio` VARCHAR(16) NOT NULL,
   `NivelCriterio` varchar(8) NOT NULL,
-  `DesCriterio` varchar(20) DEFAULT NULL,
+  `DesCriterio` VARCHAR(100) DEFAULT NULL,
   PRIMARY KEY (`Cod_Criterio`),
   KEY `Cod_RubricaPersona` (`Cod_RubricaPersona`),
   CONSTRAINT `mdl_criterio_ibfk_1` FOREIGN KEY (`Cod_RubricaPersona`) REFERENCES `mdl_rubrica` (`Cod_RubricaPersona`)
@@ -513,7 +513,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_CRITERIO_G`(
 IN pCod_RubricaPersona VARCHAR(16),
 IN pCod_Criterio VARCHAR(16),
 IN pNivelCriterio VARCHAR(8),
-IN pDesCriterio VARCHAR(20)
+IN pDesCriterio VARCHAR(100)
 )
 BEGIN
 IF NOT EXISTS (SELECT Cod_RubricaPersona FROM mdl_Criterio WHERE Cod_RubricaPersona = pCod_RubricaPersona)
