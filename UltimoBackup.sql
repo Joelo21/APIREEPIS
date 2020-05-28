@@ -1759,32 +1759,42 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_G`(
 IN pCod_Curso VARCHAR(8),
 IN pCod_Rubrica VARCHAR(16),
 IN pCod_Criterio VARCHAR(8),
+IN pNivelCriterio VARCHAR(8),
 IN pCod_Resultado VARCHAR(16),
 IN pTCod_Resultado VARCHAR(16)
 )
 BEGIN
-IF NOT EXISTS (SELECT Cod_AsignacionIndicador FROM MDL_asignacionIndicador WHERE (Cod_AsignacionIndicador = pCod_AsignacionIndicador) )
+DECLARE pPosicion_Ind INT;
+IF (pTCod_Resultado = '')
 THEN
+SET pPosicion_Ind = (SELECT `TraerPosicion`((pCod_Resultado), (pNivelCriterio), (pCod_Criterio)));
 INSERT INTO MDL_asignacionIndicador(
 Cod_Curso,
 Cod_Rubrica,
 Cod_Criterio,
-Cod_Resultado
+NivelCriterio,
+Cod_Resultado,
+Posicion_Ind
 )
 VALUES (
 pCod_Curso,
 pCod_Rubrica,
 pCod_Criterio,
-pCod_Resultado
+pNivelCriterio,
+pCod_Resultado,
+pPosicion_Ind
 );
 ELSE
+SET pPosicion_Ind = (SELECT `TraerPosicion`((pTCod_Resultado), (pNivelCriterio), (pCod_Criterio)));
 UPDATE MDL_asignacionIndicador
 SET
 Cod_Curso=pCod_Curso,
 Cod_Rubrica=pCod_Rubrica,
 Cod_Criterio=pCod_Criterio,
-Cod_Resultado=pCod_Resultado
-WHERE (Cod_AsignacionIndicador=pCod_AsignacionIndicador);
+NivelCriterio=pNivelCriterio,
+Cod_Resultado=pCod_Resultado,
+Posicion_Ind=pPosicion_Ind
+WHERE ((Cod_Resultado=pTCod_Resultado) AND (NivelCriterio=pNivelCriterio) AND (Cod_Criterio=pCod_Criterio));
 END IF;
 END//
 DELIMITER ;
