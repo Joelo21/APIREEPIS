@@ -20,6 +20,7 @@ var ObjetivoResultadoCrud = require('./route/objetivoResultadoCrud');
 var ResultadoIndicadorCrud = require('./route/resultadoIndicadorCrud');
 var GRubricaCrud = require('./route/grubricaCrud');
 var GCriterioCrud = require('./route/gcriterioCrud');
+var AsignacionIndicadorCrud = require('./route/asignacionIndicadorCrud');
 
 
 var app = express();
@@ -48,6 +49,7 @@ app.use('/ObjetivoResultadoCrud',ObjetivoResultadoCrud);
 app.use('/ResultadoIndicadorCrud',ResultadoIndicadorCrud);
 app.use('/GRubricaCrud',GRubricaCrud);
 app.use('/GCriterioCrud',GCriterioCrud);
+app.use('/AsignacionIndicadorCrud',AsignacionIndicadorCrud);
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
