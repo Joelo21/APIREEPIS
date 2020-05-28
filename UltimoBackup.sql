@@ -60,7 +60,7 @@ DELETE FROM `mdl_criterio`;
 -- Volcando estructura para tabla reepis.mdl_asignacionIndicador
 DROP TABLE IF EXISTS `mdl_asignacionIndicador`;
 CREATE TABLE IF NOT EXISTS `mdl_asignacionIndicador` (
-  `Cod_AsignacionIndicador` VARCHAR(16) NOT NULL,  
+  `Cod_AsignacionIndicador` INT AUTO_INCREMENT NOT NULL,  
   `Cod_Curso` VARCHAR(8) NOT NULL,
 --  `Cod_Asignacion` VARCHAR(8) NOT NULL,
 --  `Id_Asignacion` VARCHAR(8) NOT NULL,
@@ -1756,7 +1756,6 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_G`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_G`(
-IN pCod_AsignacionIndicador VARCHAR(16),  
 IN pCod_Curso VARCHAR(8),
 IN pCod_Rubrica VARCHAR(16),
 IN pCod_Criterio VARCHAR(8),
@@ -1764,23 +1763,15 @@ IN pCod_Resultado VARCHAR(16),
 IN pTCod_Resultado VARCHAR(16)
 )
 BEGIN
-IF (pTCod_Resultado = NULL)
-THEN
-
-DECLARE Posicion_Ind INT;
-
-SET Posicion_Ind  = (SELECT `TraerCod_Escuela`(pDes_Escuela));
 IF NOT EXISTS (SELECT Cod_AsignacionIndicador FROM MDL_asignacionIndicador WHERE (Cod_AsignacionIndicador = pCod_AsignacionIndicador) )
 THEN
 INSERT INTO MDL_asignacionIndicador(
-Cod_AsignacionIndicador,  
 Cod_Curso,
 Cod_Rubrica,
 Cod_Criterio,
 Cod_Resultado
 )
 VALUES (
-pCod_AsignacionIndicador,  
 pCod_Curso,
 pCod_Rubrica,
 pCod_Criterio,
@@ -1789,7 +1780,6 @@ pCod_Resultado
 ELSE
 UPDATE MDL_asignacionIndicador
 SET
-Cod_AsignacionIndicador=pCod_AsignacionIndicador,
 Cod_Curso=pCod_Curso,
 Cod_Rubrica=pCod_Rubrica,
 Cod_Criterio=pCod_Criterio,
