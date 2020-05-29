@@ -257,9 +257,9 @@ CREATE TABLE IF NOT EXISTS `mdl_nivel` (
   `Cod_Nivel` VARCHAR(16) NOT NULL,
   `Cod_Criterio` VARCHAR(16) NOT NULL,
   `Descripcion` VARCHAR(1024) DEFAULT NULL,
-  `Puntaje` INT DEFAULT NULL,
-  `PuntajeObtenido` INT DEFAULT NULL,
-  `PuntajeFinal` DECIMAL(10,00) DEFAULT NULL,
+  `Puntaje` INT ,
+  `PuntajeObtenido` INT NULL,
+  `PuntajeFinal` DECIMAL(2,2) NULL,
   PRIMARY KEY (`Cod_Nivel`),
   KEY `Cod_Criterio` (`Cod_Criterio`),
   CONSTRAINT `mdl_nivel_ibfk_1` FOREIGN KEY (`Cod_Criterio`) REFERENCES `mdl_criterio` (`Cod_Criterio`)
@@ -1196,9 +1196,10 @@ IN pCod_Criterio VARCHAR(16),
 IN pDescripcion VARCHAR(1024),
 IN pPuntaje INT,
 IN pPuntajeObtenido INT,
-IN pPuntajeFinal DECIMAL(10,0)
+IN pPuntajeFinal DECIMAL(10,2)
 )
 BEGIN
+
 IF NOT EXISTS (SELECT Cod_Nivel  FROM mdl_Nivel WHERE  (Cod_Nivel=pCod_Nivel))
 THEN
 INSERT INTO mdl_Nivel(
@@ -1741,63 +1742,76 @@ DELIMITER ;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_mdl_asignacionIndicador_E
-DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_E`;
-DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_E`(
- IN pCod_AsignacionIndicador VARCHAR(8)
-   )
-BEGIN
-   DELETE FROM MDL_asignacionIndicador
-   WHERE (Cod_AsignacionIndicador = pCod_AsignacionIndicador);
-END//
-DELIMITER ;
-
--- Volcando estructura para procedimiento reepis.USP_MDL_asignacionIndicador_G
-DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_G`;
-DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_G`(
-IN pCod_Curso VARCHAR(8),
-IN pCod_Rubrica VARCHAR(16),
-IN pCod_Criterio VARCHAR(8),
-IN pNivelCriterio VARCHAR(8),
-IN pCod_Resultado VARCHAR(16),
-IN pTCod_Resultado VARCHAR(16)
-)
-BEGIN
-DECLARE pPosicion_Ind INT;
-IF (pTCod_Resultado = '')
-THEN
-SET pPosicion_Ind = (SELECT `TraerPosicion`((pCod_Resultado), (pNivelCriterio), (pCod_Criterio)));
-INSERT INTO MDL_asignacionIndicador(
-Cod_Curso,
-Cod_Rubrica,
-Cod_Criterio,
-NivelCriterio,
-Cod_Resultado,
-Posicion_Ind
-)
-VALUES (
-pCod_Curso,
-pCod_Rubrica,
-pCod_Criterio,
-pNivelCriterio,
-pCod_Resultado,
-pPosicion_Ind
-);
-ELSE
-SET pPosicion_Ind = (SELECT `TraerPosicion`((pTCod_Resultado), (pNivelCriterio), (pCod_Criterio)));
-UPDATE MDL_asignacionIndicador
-SET
-Cod_Curso=pCod_Curso,
-Cod_Rubrica=pCod_Rubrica,
-Cod_Criterio=pCod_Criterio,
-NivelCriterio=pNivelCriterio,
-Cod_Resultado=pCod_Resultado,
-Posicion_Ind=pPosicion_Ind
-WHERE ((Cod_Resultado=pTCod_Resultado) AND (NivelCriterio=pNivelCriterio) AND (Cod_Criterio=pCod_Criterio));
-END IF;
-END//
-DELIMITER ;
+	DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_E`;
+	DELIMITER //
+	CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_E`(
+	 IN pCod_AsignacionIndicador VARCHAR(8)
+	   )
+	BEGIN
+	   DELETE FROM MDL_asignacionIndicador
+	   WHERE (Cod_AsignacionIndicador = pCod_AsignacionIndicador);
+	END//
+	DELIMITER ;
+	
+	-- Volcando estructura para procedimiento reepis.USP_MDL_asignacionIndicador_G
+	DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_G`;
+	DELIMITER //
+	CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_asignacionIndicador_G`(
+	IN pCod_Criterio VARCHAR(8),
+	IN pCod_Curso VARCHAR(8),
+	IN pCod_Resultado VARCHAR(16),
+	IN pCod_Rubrica VARCHAR(16),
+	IN pNivelCriterio VARCHAR(8),
+	IN pTCod_Resultado VARCHAR(16)
+	)
+	BEGIN
+	DECLARE pPosicion_Ind INT;
+	IF (pTCod_Resultado = '0')
+	THEN
+	SET pPosicion_Ind = (SELECT `TraerPosicion`((pCod_Resultado), (pNivelCriterio), (pCod_Criterio)));
+	IF EXISTS(SELECT Cod_AsignacionIndicador FROM MDL_asignacionIndicador WHERE (Cod_Resultado=pCod_Resultado) AND (NivelCriterio=pNivelCriterio) AND (Cod_Criterio=pCod_Criterio))
+	THEN
+	UPDATE MDL_asignacionIndicador
+	SET
+	Cod_Curso=pCod_Curso,
+	Cod_Rubrica=pCod_Rubrica,
+	Cod_Criterio=pCod_Criterio,
+	NivelCriterio=pNivelCriterio,
+	Cod_Resultado=pCod_Resultado,
+	Posicion_Ind=pPosicion_Ind
+	WHERE ((Cod_Resultado=pCod_Resultado) AND (NivelCriterio=pNivelCriterio) AND (Cod_Criterio=pCod_Criterio));
+	ELSE
+	INSERT INTO MDL_asignacionIndicador(
+	Cod_Curso,
+	Cod_Rubrica,
+	Cod_Criterio,
+	NivelCriterio,
+	Cod_Resultado,
+	Posicion_Ind
+	)
+	VALUES (
+	pCod_Curso,
+	pCod_Rubrica,
+	pCod_Criterio,
+	pNivelCriterio,
+	pCod_Resultado,
+	pPosicion_Ind
+	);
+	END IF;
+	ELSE
+	SET pPosicion_Ind = (SELECT `TraerPosicion`((pTCod_Resultado), (pNivelCriterio), (pCod_Criterio)));
+	UPDATE MDL_asignacionIndicador
+	SET
+	Cod_Curso=pCod_Curso,
+	Cod_Rubrica=pCod_Rubrica,
+	Cod_Criterio=pCod_Criterio,
+	NivelCriterio=pNivelCriterio,
+	Cod_Resultado=pCod_Resultado,
+	Posicion_Ind=pPosicion_Ind
+	WHERE ((Cod_Resultado=pTCod_Resultado) AND (NivelCriterio=pNivelCriterio) AND (Cod_Criterio=pCod_Criterio));
+	END IF;
+	END//
+	DELIMITER ;
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_asignacionIndicador_TT
 DROP PROCEDURE IF EXISTS `USP_MDL_asignacionIndicador_TT`;

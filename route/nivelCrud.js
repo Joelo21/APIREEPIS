@@ -42,8 +42,8 @@ router.post("/Guardar", async function(req, res, next) {
     Cod_Criterio,
     Descripcion,
     Puntaje,
-    PuntajeObtenido,
-    PuntajeFinal
+    PuntajeFinal,
+    PuntajeObtenido    
   } = req.body;
 
   try {
@@ -53,9 +53,9 @@ router.post("/Guardar", async function(req, res, next) {
         Cod_Nivel,
         Cod_Criterio,
         Descripcion,
-        Puntaje,
+        Puntaje,        
+        PuntajeFinal,
         PuntajeObtenido,
-        PuntajeFinal
       ]
     ).then(Nnivel => {
       res.status(201).json({

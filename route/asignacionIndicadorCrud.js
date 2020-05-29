@@ -102,11 +102,11 @@ router.post("/GParticipantes", async function(req, res, next) {
 
 router.post("/Guardar", async function(req, res, next) {
   const {
-    Cod_Curso,
-    Cod_Rubrica,
     Cod_Criterio,
-    NivelCriterio,
+    Cod_Curso,
     Cod_Resultado,
+    Cod_Rubrica,
+    NivelCriterio,
     TCod_Resultado
   } = req.body;
 
@@ -114,11 +114,11 @@ router.post("/Guardar", async function(req, res, next) {
     const Gasignatura = await AsignacionIndServicio.Guardar(
       "CALL USP_MDL_asignacionIndicador_G(?,?,?,?,?,?)",
       [
-        Cod_Curso,
-        Cod_Rubrica,
         Cod_Criterio,
-        NivelCriterio,
+        Cod_Curso,
         Cod_Resultado,
+        Cod_Rubrica,
+        NivelCriterio,
         TCod_Resultado
       ]
     ).then(asignaturas => {
