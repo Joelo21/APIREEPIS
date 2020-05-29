@@ -103,3 +103,17 @@ END IF;
 END;
 //
 DELIMITER ;
+
+
+SELECT A.NomAsignacion, 
+P.Nombre, C.NivelCriterio, GC.DesCriterio, CO.Cod_Objetivo, RO.Cod_Resultado, IR.Cod_Indicador, IF(N.PuntajeFinal=0.99, 1, N.PuntajeFinal) AS PuntajeFinal FROM mdl_nivel AS N
+INNER JOIN mdl_criterio AS C ON N.Cod_Criterio = C.Cod_Criterio
+INNER JOIN mdl_rubrica AS R ON C.Cod_RubricaPersona = R.Cod_RubricaPersona
+INNER JOIN mdl_persona AS P ON R.Cod_Persona = P.Cod_Persona
+INNER JOIN mdl_asignacion AS A ON R.Cod_Asignacion = A.Cod_Asignacion AND A.Id_Asignacion = '48' AND A.Cod_Unidad = '13'
+INNER JOIN mdl_grubrica AS GR ON A.Cod_Asignacion = GR.Cod_Asignacion
+INNER JOIN mdl_gcriterio AS GC ON GR.Cod_Rubrica = GC.Cod_Rubrica AND GC.DesCriterio = C.DesCriterio
+INNER JOIN mdl_asignacionindicador AS AI ON GC.Cod_Criterio = AI.Cod_Criterio AND GC.NivelCriterio = AI.NivelCriterio
+INNER JOIN mdl_indrecursobjetivo AS IR ON AI.Cod_Resultado = IR.Cod_IndicarResultado
+INNER JOIN mdl_resulcursobjetivo AS RO ON IR.Cod_Resultado = RO.Cod_ResulCursObjetivo
+INNER JOIN mdl_cursoobjetivo AS CO ON RO.Cod_Objetivo = CO.Cod_Objetivo AND CO.Cod_Curso = '5'
