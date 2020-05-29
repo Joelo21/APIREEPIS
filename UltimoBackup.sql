@@ -1198,7 +1198,7 @@ IN pPuntaje INT,
 IN pPuntajeObtenido INT,
 IN pPuntajeFinal DECIMAL(10,2)
 )
-BEGIN
+BEGIN 
 
 IF NOT EXISTS (SELECT Cod_Nivel  FROM mdl_Nivel WHERE  (Cod_Nivel=pCod_Nivel))
 THEN
@@ -1210,7 +1210,7 @@ Puntaje,
 PuntajeObtenido,
 PuntajeFinal
 )
-VALUES (
+VALUES ( 
 pCod_Nivel,
 pCod_Criterio,
 pDescripcion,
