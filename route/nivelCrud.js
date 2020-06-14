@@ -18,16 +18,15 @@ router.get("/List", async function(req, res, next) {
   }
 });
 
-router.get("/id", async function(req, res, next) {
-  const { Id_Rubrica } = req.body;
-
+router.get("/:Cod_Nivel", async function(req, res, next) {
+  const { Cod_Nivel } = req.params;
   try {
     const TUmatricula = await NivelServicio.TraerUno(
       "CALL USP_MDL_NIVEL_TU(?)",
-      [Id_Rubrica]
+      [Cod_Nivel]
     ).then(nivel => {
       res.status(200).json({
-        Resultado: nivel,
+        Resultado: nivel[0],
         message: "Nivel Lista"
       });
     });
@@ -68,12 +67,12 @@ router.post("/Guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/", async function(req, res, next) {
-  const { Id_Rubrica } = req.body;
+router.delete("/Del", async function(req, res, next) {
+  const { Cod_Nivel } = req.body;
 
   try {
     const Ematricula = await NivelServicio.Eliminar("CALL USP_MDL_NIVEL_E(?)", [
-      Id_Rubrica
+      Cod_Nivel
     ]).then(nivelE => {
       res.status(201).json({
         Resultado: nivelE,

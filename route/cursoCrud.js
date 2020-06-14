@@ -28,16 +28,15 @@ router.get("/:Cod_Curso", async function(req, res, next) {
   const { Cod_Curso } = req.params;
   try {
     const TUcurso = await CursoServicio.TraerUno(
-      "CALL USP_MDL_CURSO_TU(?)", [
-      Cod_Curso
-    ]).then(curso => {
+      "CALL USP_MDL_CURSO_TU(?)", [Cod_Curso]
+      ).then(curso => {
       if (curso[0].length === 0) {
         res.json({
           Codigo: 0
         });
       } else {
         res.status(200).json({
-          Curso: curso[0][0],
+          Curso: curso[0],
           Codigo: 1
         });
       }
@@ -67,7 +66,7 @@ router.post("/guardar", async function(req, res, next) {
       ]
     ).then(curso => {
       res.status(201).json({
-        Curso: curso,
+        Curso: curso[0],
         Codigo: "Curso Guardado"
       });
     });
@@ -76,13 +75,12 @@ router.post("/guardar", async function(req, res, next) {
   }
 });
 
-router.delete("/:Cod_Curso", async function(req, res, next) {
-  const { Cod_Curso } = req.params;
+router.delete("/Del", async function(req, res, next) {
+  const { Cod_Curso } = req.body;
 
   try {
-    const Ecurso = await CursoServicio.Eliminar("CALL USP_MDL_CURSO_E(?,?)", [
-      Cod_Curso,
-      Id_Resultado
+    const Ecurso = await CursoServicio.Eliminar("CALL USP_MDL_CURSO_E(?)", [
+      Cod_Curso
     ]).then(curso => {
       if (curso.affectedRows === 0) {
         res.json({

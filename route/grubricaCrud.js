@@ -28,7 +28,7 @@ router.get("/:Cod_Rubrica", async function(req, res, next) {
   const { Cod_Rubrica } = req.params;
   try {
     const TUrubrica = await GRubricaServicio.TraerUno(
-      "CALL USP_MDL_GRUBRICA_TU(?)",
+      "CALL USP_MDL_GRUBRICA_TU(?,?)",
       [Cod_Rubrica]
     ).then(rubrica => {
       if (rubrica[0].length === 0) {

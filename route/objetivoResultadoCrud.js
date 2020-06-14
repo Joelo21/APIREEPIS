@@ -106,7 +106,7 @@ router.post("/Guardar", async function(req, res, next) {
       [Cod_ResulCursObjetivo, Cod_Objetivo, Cod_Resultado, Cod_Curso]
     ).then(objetivoResultado => {
       res.status(201).json({
-        ObjetivoResultado: objetivoResultado,
+        ObjetivoResultado: objetivoResultado[0],
         Codigo: "Objetivo Resutado guardada"
       });
     });

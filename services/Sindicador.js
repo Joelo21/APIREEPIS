@@ -14,7 +14,6 @@ class SIndicador
       return indicadorIDT || []
     }
 
-
   async TraerUno(pProcedimiento,pParam)
     {
       const indicadorIDTU = await this.Mysqlib.TraerUno(pProcedimiento,pParam);
@@ -32,10 +31,6 @@ class SIndicador
       const indicadorIDE = await this.Mysqlib.Eliminar(pProcedimiento,pParam);
       return indicadorIDE;
     }
-
 }
 
 module.exports=SIndicador;
-
-
-

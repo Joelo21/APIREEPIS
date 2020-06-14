@@ -34,6 +34,3 @@ class SResultadoIndicador
 }
 
 module.exports=SResultadoIndicador;
-
-
-
