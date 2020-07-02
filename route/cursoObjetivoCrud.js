@@ -37,7 +37,7 @@ router.post("/ListCod_Curso", async function(req, res, next) {
         });
       } else {
         res.status(200).json({
-          CursoObjetivos: cursoObjetivo[0][0],
+          CursoObjetivos: cursoObjetivo[0],
           Codigo: 1
         });
       }
