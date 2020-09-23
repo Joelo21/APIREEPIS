@@ -24,12 +24,12 @@ router.get("/List", async function(req, res, next) {
   }
 });
 
-router.get("/:Id_Rubrica", async function(req, res, next) {
-  const { Id_Rubrica } = req.params;
+router.get("/:Cod_Criterio", async function(req, res, next) {
+  const { Cod_Criterio } = req.params;
   try {
     const TUcriterio = await CriterioServicio.TraerUno(
       "CALL USP_MDL_CRITERIO_TU(?)",
-      [Id_Rubrica]
+      [Cod_Criterio]
     ).then(criterio => {
       res.status(200).json({
         Criterio: criterio[0],
@@ -54,7 +54,7 @@ router.post("/Guardar", async function(req, res, next) {
       [Cod_RubricaPersona, Cod_Criterio, NivelCriterio, DesCriterio]
     ).then(criterio => {
       res.status(201).json({
-        Criterio: criterio,
+        Criterio: criterio[0],
         message: "Criterio guardado"+Cod_Criterio
       });
     });
@@ -64,11 +64,11 @@ router.post("/Guardar", async function(req, res, next) {
 });
 
 router.delete("/Del", async function(req, res, next) {
-  const { DesCriterio } = req.body;
+  const { Cod_Criterio } = req.body;
   try {
     const Ecriterio = await CriterioServicio.Eliminar(
       "CALL USP_MDL_CRITERIO_E(?)",
-      [DesCriterio]
+      [Cod_Criterio]
     ).then(criterio => {
       res.status(201).json({
         Criterio: criterio[0],

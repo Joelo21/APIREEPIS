@@ -24,13 +24,13 @@ router.get("/List", async function(req, res, next) {
   }
 });
 
-router.get("/:Cod_Rubrica", async function(req, res, next) {
-  const { Cod_Rubrica } = req.params;
+router.get("/:Cod_Rubrica/:Cod_Asignacion", async function(req, res, next) {
+  const { Cod_Rubrica, Cod_Asignacion } = req.params;
 
   try {
     const TUrubrica = await RubricaServicio.TraerUno(
-      "CALL USP_MDL_RUBRICA_TU(?)",
-      [Cod_Rubrica]
+      "CALL USP_MDL_RUBRICA_TU(?,?)",
+      [Cod_Rubrica, Cod_Asignacion]
     ).then(rubrica => {
       if (rubrica[0].length === 0) {
         res.json({
@@ -83,16 +83,13 @@ router.post("/Guardar", async function(req, res, next) {
     next(err);
   }
 });
-
+ 
 router.delete("/Del", async function(req, res, next) {
-  const { Cod_Rubrica } = req.body;
-  const { Cod_Asignacion } = req.body;
-  const { Cod_Persona } = req.body;
-
-  try {
+  const { Cod_RubricaPersona } = req.body;
+   try {
     const Erubrica = await RubricaServicio.Eliminar(
-      "CALL USP_MDL_RUBRICA_E(?,?,?)",
-      [Cod_Rubrica, Cod_Asignacion, Cod_Persona]
+      "CALL USP_MDL_RUBRICA_E(?)",
+      [ Cod_RubricaPersona ]
     ).then(rubrica => {
       if (rubrica.affectedRows === 0) {
         res.json({

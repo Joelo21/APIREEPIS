@@ -71,7 +71,6 @@ router.post("/TxRubrica", async function(req, res, next) {
   }
 });
 
-
 router.post("/GParticipantes", async function(req, res, next) {
   const {
     Cod_Asignacion,
@@ -79,7 +78,6 @@ router.post("/GParticipantes", async function(req, res, next) {
     Presentados,
     Pendientes   
   } = req.body;
-
   try {
     const Gasignatura = await AsignacionIndServicio.Guardar(
       "CALL USP_MDL_ASIGNACION_GxParticipantes(?,?,?,?)",
@@ -155,28 +153,5 @@ router.delete("/Del", async function(req, res, next) {
     next(err);
   }
 });
-
-// router.post("/TRubrica", async function(req, res, next) {
-//   const { Cod_Curso, Cod_Asignacion , Id_Asignacion} = req.body;
-//   try {
-//     const TresultadoIndicador = await AsignacionIndServicio.TraerUno(
-//       "CALL USP_MDL_ASIGNACION_TxRubrica(?,?,?)",
-//       [Cod_Curso, Cod_Asignacion , Id_Asignacion]
-//     ).then(RubricaAsignacion => {
-//       if (RubricaAsignacion[0].length === 0) {
-//         res.json({
-//           Codigo: 0
-//         });
-//       } else {
-//         res.status(200).json({
-//           RubricaAsignacion: RubricaAsignacion[0],
-//           Codigo: 1
-//         });
-//       }
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// });
 
 module.exports = router;

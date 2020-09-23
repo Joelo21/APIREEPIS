@@ -107,7 +107,7 @@ router.post("/Guardar", async function(req, res, next) {
       [Cod_IndicarResultado, Cod_Resultado, Cod_Indicador, Cod_Curso]
     ).then(resultadoIndicador => {
       res.status(201).json({
-        ResultadoIndicador: resultadoIndicador,
+        ResultadoIndicador: resultadoIndicador[0],
         Codigo: "Resultado Indicador guardada"
       });
     });
@@ -129,7 +129,7 @@ router.delete("/Del", async function(req, res, next) {
         });
       } else {
         res.status(201).json({
-          resultadoIndicador: "Objetivo  Resutado Eliminada",
+          resultadoIndicador: "Objetivo Indicador Eliminada",
           Codigo: 1
         });
       }

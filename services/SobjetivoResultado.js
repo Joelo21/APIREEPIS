@@ -1,5 +1,4 @@
 const Mysqlib = require("../lib/Mysql");
-
 class SObjetivoResultado
 {
   constructor()
@@ -34,6 +33,3 @@ class SObjetivoResultado
 }
 
 module.exports=SObjetivoResultado;
-
-
-

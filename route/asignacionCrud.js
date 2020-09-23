@@ -48,7 +48,7 @@ router.get("/:Cod_Asignacion", async function(req, res, next) {
   }
 });
 
-router.post("/GParticipantes", async function(req, res, next) {
+router.post("/Guardar", async function(req, res, next) {
   const {
     Cod_Asignacion,
     Participantes,
@@ -67,7 +67,7 @@ router.post("/GParticipantes", async function(req, res, next) {
       ]
     ).then(asignaturas => {
       res.status(201).json({
-        Asignaturas: asignaturas[0],
+        Asignaturas: asignaturas[0][0],
         Mensaje: "Asignatura participantes Guardada"
       });
     });

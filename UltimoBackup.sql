@@ -471,6 +471,7 @@ END IF;
 END//
 DELIMITER ;
 
+
 -- Volcando estructura para procedimiento reepis.USP_MDL_ASIGNACION_TT
 DROP PROCEDURE IF EXISTS `USP_MDL_ASIGNACION_TT`;
 DELIMITER //
@@ -497,7 +498,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_CRITERIO_E`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_CRITERIO_E`(
-   IN pCod_Criterio varchar(8)
+   IN pCod_Criterio VARCHAR(16)
    )
 BEGIN
    DELETE FROM mdl_Criterio
@@ -554,11 +555,11 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_CRITERIO_TU`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_CRITERIO_TU`(
-   IN pId_Rubrica INT)
+   IN pCod_Criterio VARCHAR(16))
 BEGIN
    SELECT *
    FROM mdl_Criterio
-   where Id_Rubrica=pId_Rubrica;
+   where Cod_Criterio=pCod_Criterio;
    END//
 DELIMITER ;
 
@@ -724,12 +725,11 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_CURSO_E`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_CURSO_E`(
-	IN pCod_Curso varchar(8),
-	IN pCod_Resultado VARCHAR(8)
+	IN pCod_Curso varchar(8)
 	)
 BEGIN
 	DELETE FROM mdl_Curso
-WHERE (Cod_Curso=pCod_Curso) AND (Cod_Resultado=pCod_Resultado);
+WHERE (Cod_Curso=pCod_Curso);
 END//
 DELIMITER ;
 
@@ -786,13 +786,12 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_CURSO_TU`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_CURSO_TU`(
-   IN pCod_Resultado VARCHAR(8),
-	IN pCod_Curso varchar(8)
+   	IN pCod_Curso varchar(8)
 	)
 BEGIN
    SELECT *
    FROM mdl_Curso
-   WHERE (Cod_Resultado=pCod_Resultado) AND (Cod_Curso=pCod_Curso);
+   WHERE (Cod_Curso=pCod_Curso);
    END//
 DELIMITER ;
 
@@ -1179,13 +1178,13 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_NIVEL_E`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_NIVEL_E`(
-   IN pCod_Rubrica varchar(8)
-   )
+   IN pCod_Nivel VARCHAR(16))
 BEGIN
    DELETE FROM mdl_Nivel
-   WHERE (Cod_Rubrica = pCod_Rubrica);
+ 	where Cod_Nivel = pCod_Nivel;
 END//
 DELIMITER ;
+
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_NIVEL_G
 DROP PROCEDURE IF EXISTS `USP_MDL_NIVEL_G`;
@@ -1245,7 +1244,7 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_NIVEL_TU`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_NIVEL_TU`(
-   IN pCod_Nivel varchar(8))
+   IN pCod_Nivel VARCHAR(16))
 BEGIN
    SELECT *
    FROM mdl_Nivel
@@ -1270,10 +1269,10 @@ DROP PROCEDURE IF EXISTS `USP_MDL_OBJETIVOEDUCACIONAL_G`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_OBJETIVOEDUCACIONAL_G`(
 IN pCod_Objetivo VARCHAR(8),
-IN pDes_Escuela VARCHAR(255),
+IN pCod_Escuela VARCHAR(8),
 IN pDescripcion VARCHAR(1024))
 BEGIN
-DECLARE pCod_Escuela VARCHAR(255);
+DECLARE pCod_Escuela VARCHAR(8);
 SET pCod_Escuela = (SELECT `TraerCod_Escuela`(pDes_Escuela));
 IF NOT EXISTS (SELECT Cod_Objetivo FROM mdl_objetivoeducacional WHERE  Cod_Objetivo = pCod_Objetivo)
 THEN
@@ -1580,14 +1579,12 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `USP_MDL_RUBRICA_E`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_RUBRICA_E`(
- IN pCod_Rubrica VARCHAR(8),
- IN pCod_Asignacion VARCHAR(8),
- IN pCod_Persona VARCHAR(8)
+ IN pCod_RubricaPersona VARCHAR(16)
 
    )
 BEGIN
    DELETE FROM mdl_Rubrica
-   WHERE ((Cod_Rubrica = pCod_Rubrica) AND (Cod_Asignacion = pCod_Asignacion) AND (Cod_Persona = pCod_Persona));
+   WHERE ((Cod_RubricaPersona = pCod_RubricaPersona));
 END//
 DELIMITER ;
 

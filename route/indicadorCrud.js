@@ -68,13 +68,13 @@ router.get("/ListCom", async function(req, res, next) {
   }
 });
 
-router.get("/:Cod_Indicador", async function(req, res, next) {
-  const { Cod_Indicador } = req.params;
+router.get("/:Cod_Indicador/:Cod_Resultado/:Cod_Indicadornivel", async function(req, res, next) {
+  const {Cod_Indicador, Cod_Resultado, Cod_Indicadornivel} = req.params;
 
   try {
     const TUindicador = await IndicadorServicio.TraerUno(
-      "CALL USP_MDL_INDICADOR_TU(?,?)",
-      [Cod_Indicador, Id_Resultado]
+      "CALL USP_MDL_INDICADOR_TU(?,?,?)",
+      [Cod_Indicador, Cod_Resultado, Cod_Indicadornivel]
     ).then(indicador => {
       if (indicador[0].length === 0) {
         res.json({
@@ -125,12 +125,12 @@ router.post("/Guardar", async function(req, res, next) {
 });
 
 router.delete("/Del", async function(req, res, next) {
-  const { Cod_Indicador } = req.body;
+  const { Cod_Indicador, Cod_Resultado, Cod_Indicadornivel } = req.body;
 
   try {
     const Eindicador = await IndicadorServicio.Eliminar(
-      "CALL USP_MDL_INDICADOR_E(?,?)",
-      [Cod_Indicador]
+      "CALL USP_MDL_INDICADOR_E(?,?,?)",
+      [Cod_Indicador, Cod_Resultado, Cod_Indicadornivel]
     ).then(indicador => {
       if (indicador.affectedRows === 0) {
         res.json({
