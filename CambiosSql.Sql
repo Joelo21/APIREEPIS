@@ -104,16 +104,69 @@ END;
 //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS `USP_MDL_ASIGNACION_TxEstado`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ASIGNACION_TxEstado`(
+   IN pCod_Curso varchar(8),
+	IN pCod_Asignacion varchar(8),
+	IN pId_Asignacion varchar(8))
+BEGIN
+SELECT A.Flag_Activo FROM mdl_asignacion AS A
+WHERE A.Id_Asignacion = pId_Asignacion AND A.Cod_Curso = pCod_Curso  AND A.Cod_Asignacion = pCod_Asignacion;
+END//
+DELIMITER ;
 
+DROP PROCEDURE IF EXISTS `USP_MDL_ASIGNACION_AxEstado`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ASIGNACION_AxEstado`(
+   IN pCod_Curso varchar(8),
+	IN pCod_Asignacion varchar(8),
+	IN pFlag_Activo bool,
+	IN pId_Asignacion varchar(8)
+	)
+BEGIN
+UPDATE mdl_asignacion AS A SET A.Flag_Activo = pFlag_Activo
+WHERE A.Id_Asignacion = pId_Asignacion AND A.Cod_Curso = pCod_Curso  AND A.Cod_Asignacion = pCod_Asignacion;
+   END//
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS `URP_TRAER_NOTAS_UNIDAD`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `URP_TRAER_NOTAS_UNIDAD`(
+   IN pCod_Curso VARCHAR(16),
+	IN pCod_Unidad VARCHAR(8),
+	IN pId_Asignacion VARCHAR(8))
+BEGIN
 SELECT A.NomAsignacion, 
-P.Nombre, C.NivelCriterio, GC.DesCriterio, CO.Cod_Objetivo, RO.Cod_Resultado, IR.Cod_Indicador, IF(N.PuntajeFinal=0.99, 1, N.PuntajeFinal) AS PuntajeFinal FROM mdl_nivel AS N
+P.Cod_Persona, C.NivelCriterio, GC.DesCriterio, RC.Cod_Resultado, IR.Cod_Indicador, IF(N.PuntajeFinal=0.99, 1, N.PuntajeFinal) AS PuntajeFinal 
+FROM mdl_nivel AS N
 INNER JOIN mdl_criterio AS C ON N.Cod_Criterio = C.Cod_Criterio
 INNER JOIN mdl_rubrica AS R ON C.Cod_RubricaPersona = R.Cod_RubricaPersona
 INNER JOIN mdl_persona AS P ON R.Cod_Persona = P.Cod_Persona
-INNER JOIN mdl_asignacion AS A ON R.Cod_Asignacion = A.Cod_Asignacion AND A.Id_Asignacion = '48' AND A.Cod_Unidad = '13'
+INNER JOIN mdl_asignacion AS A ON R.Cod_Asignacion = A.Cod_Asignacion AND A.Flag_Activo = 1 AND A.Id_Asignacion = pId_Asignacion AND A.Cod_Unidad = pCod_Unidad
 INNER JOIN mdl_grubrica AS GR ON A.Cod_Asignacion = GR.Cod_Asignacion
 INNER JOIN mdl_gcriterio AS GC ON GR.Cod_Rubrica = GC.Cod_Rubrica AND GC.DesCriterio = C.DesCriterio
 INNER JOIN mdl_asignacionindicador AS AI ON GC.Cod_Criterio = AI.Cod_Criterio AND GC.NivelCriterio = AI.NivelCriterio
 INNER JOIN mdl_indrecursobjetivo AS IR ON AI.Cod_Resultado = IR.Cod_IndicarResultado
-INNER JOIN mdl_resulcursobjetivo AS RO ON IR.Cod_Resultado = RO.Cod_ResulCursObjetivo
-INNER JOIN mdl_cursoobjetivo AS CO ON RO.Cod_Objetivo = CO.Cod_Objetivo AND CO.Cod_Curso = '5'
+INNER JOIN mdl_resulcursobjetivo AS RC ON IR.Cod_Resultado = RC.Cod_ResulCursObjetivo AND IR.Cod_Curso = pCod_Curso
+ORDER BY P.Nombre, RC.Cod_Resultado, IR.Cod_Indicador ASC;
+END//
+DELIMITER ; 
+
+SELECT A.NomAsignacion, P.Nombre, C.NivelCriterio, GC.DesCriterio, RC.Cod_Resultado, IR.Cod_Indicador, IF(N.PuntajeFinal=0.99, 1, N.PuntajeFinal) AS PuntajeFinal 
+FROM mdl_nivel AS N
+INNER JOIN mdl_criterio AS C ON N.Cod_Criterio = C.Cod_Criterio
+INNER JOIN mdl_rubrica AS R ON C.Cod_RubricaPersona = R.Cod_RubricaPersona
+INNER JOIN mdl_persona AS P ON R.Cod_Persona = P.Cod_Persona
+INNER JOIN mdl_asignacion AS A ON R.Cod_Asignacion = A.Cod_Asignacion AND A.Flag_Activo = 1 AND A.Id_Asignacion = '1' AND A.Cod_Unidad = '2'
+INNER JOIN mdl_grubrica AS GR ON A.Cod_Asignacion = GR.Cod_Asignacion
+INNER JOIN mdl_gcriterio AS GC ON GR.Cod_Rubrica = GC.Cod_Rubrica AND GC.DesCriterio = C.DesCriterio
+INNER JOIN mdl_asignacionindicador AS AI ON GC.Cod_Criterio = AI.Cod_Criterio AND GC.NivelCriterio = AI.NivelCriterio
+INNER JOIN mdl_indrecursobjetivo AS IR ON AI.Cod_Resultado = IR.Cod_IndicarResultado
+INNER JOIN mdl_resulcursobjetivo AS RC ON IR.Cod_Resultado = RC.Cod_ResulCursObjetivo AND RC.Cod_Curso = '2'
+ORDER BY P.Nombre, RC.Cod_Resultado, IR.Cod_Indicador ASC
+
+
+
+SELECT * FROM mdl_asignacion WHERE Flag_Activo = true

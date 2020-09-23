@@ -96,14 +96,13 @@ router.get("/:Cod_objetivoResultado", async function(req, res, next) {
 router.post("/Guardar", async function(req, res, next) {
   const {
     Cod_ResulCursObjetivo,
-    Cod_Objetivo,
     Cod_Resultado,
     Cod_Curso
   } = req.body;
   try {
     const GobjetivoResultado = await ObjetivoResultadoServicio.Guardar(
-      "CALL USP_MDL_ResulCursObjetivo_G(?,?,?,?)",
-      [Cod_ResulCursObjetivo, Cod_Objetivo, Cod_Resultado, Cod_Curso]
+      "CALL USP_MDL_ResulCursObjetivo_G(?,?,?)",
+      [Cod_ResulCursObjetivo, Cod_Resultado, Cod_Curso]
     ).then(objetivoResultado => {
       res.status(201).json({
         ObjetivoResultado: objetivoResultado,

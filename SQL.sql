@@ -1872,7 +1872,6 @@ INSERT INTO `mdl_persona` (`Cod_Persona`, `Nombre`, `Apellidos`, `NomPersona`, `
 DROP TABLE IF EXISTS `mdl_resulcursobjetivo`;
 CREATE TABLE IF NOT EXISTS `mdl_resulcursobjetivo` (
   `Cod_ResulCursObjetivo` varchar(16) NOT NULL,
-  `Cod_Objetivo` varchar(16) NOT NULL,
   `Cod_Resultado` varchar(16) NOT NULL,
   `Cod_Curso` varchar(16) NOT NULL,
   PRIMARY KEY (`Cod_ResulCursObjetivo`)
@@ -2340,14 +2339,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ASIGNACION_TxRubrica`(
 	IN pCod_Asignacion varchar(8),
 	IN pId_Asignacion varchar(8))
 BEGIN
-		SELECT A.Cod_Asignacion, A.Id_Asignacion, GR.NomRubrica, GC.NivelCriterio, GC.DesCriterio, AI.Cod_AsignacionIndicador, AI.Cod_Resultado FROM mdl_asignacion A
-		INNER JOIN mdl_grubrica AS GR ON A.Cod_Asignacion = GR.Cod_Asignacion AND A.Cod_Curso = GR.Cod_Curso
+		DECLARE pCod_Rubrica varchar(8);
+		SET pCod_Rubrica = CONCAT('r',pId_Asignacion);
+		SELECT A.Cod_Asignacion, A.Id_Asignacion, GR.NomRubrica, GC.NivelCriterio, GC.DesCriterio, AI.Cod_AsignacionIndicador, AI.Cod_Resultado 
+		FROM mdl_asignacion A
+		INNER JOIN mdl_grubrica AS GR ON A.Cod_Asignacion = GR.Cod_Asignacion AND A.Cod_Curso = GR.Cod_Curso AND GR.Cod_Rubrica = pCod_Rubrica
 		INNER JOIN mdl_gcriterio AS GC ON GR.Cod_Rubrica = GC.Cod_Rubrica
 		LEFT JOIN mdl_asignacionindicador AS AI ON AI.Cod_Criterio = GC.Cod_Criterio 
-		WHERE A.Cod_Curso = pCod_Curso AND A.Id_Asignacion = pId_Asignacion AND A.Cod_Asignacion = pCod_Asignacion
+		WHERE A.Id_Asignacion = pId_Asignacion AND A.Cod_Curso = pCod_Curso  AND A.Cod_Asignacion = pCod_Asignacion
 		ORDER BY GC.NivelCriterio ASC;
    END//
 DELIMITER ;
+
+
 
 -- Volcando estructura para procedimiento reepis.USP_MDL_CRITERIO_E
 DROP PROCEDURE IF EXISTS `USP_MDL_CRITERIO_E`;
@@ -3042,9 +3046,11 @@ DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_IndRecursobjetivo_TxCod_Curso`(
    IN pCod_Curso VARCHAR(16))
 BEGIN
-   SELECT *
-   FROM mdl_IndRecursobjetivo
-   where Cod_Curso=pCod_Curso;
+   SELECT ir.Cod_IndicarResultado, rc.Cod_Resultado, ir.Cod_Indicador, ir.Cod_Curso
+   FROM mdl_indrecursobjetivo AS ir
+   INNER JOIN mdl_resulcursobjetivo AS rc ON ir.Cod_Resultado = rc.Cod_ResulCursObjetivo 
+   where ir.Cod_Curso=pCod_Curso;
+   
    END//
 DELIMITER ;
 
@@ -3383,7 +3389,6 @@ DROP PROCEDURE IF EXISTS `USP_MDL_ResulCursObjetivo_G`;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_ResulCursObjetivo_G`(
 IN pCod_ResulCursObjetivo VARCHAR(16),
-IN pCod_Objetivo VARCHAR(16),
 IN pCod_Resultado VARCHAR(16),
 IN pCod_Curso VARCHAR(16)
 )
@@ -3392,13 +3397,11 @@ IF NOT EXISTS (SELECT Cod_ResulCursObjetivo FROM mdl_ResulCursObjetivo WHERE Cod
 THEN
 INSERT INTO mdl_ResulCursObjetivo(
 Cod_ResulCursObjetivo,
-Cod_Objetivo,
 Cod_Resultado,
 Cod_Curso
 )
 VALUES (
 pCod_ResulCursObjetivo,
-pCod_Objetivo,
 pCod_Resultado,
 pCod_Curso
 );
@@ -3406,7 +3409,6 @@ ELSE
 UPDATE mdl_ResulCursObjetivo
 SET
 Cod_ResulCursObjetivo=pCod_ResulCursObjetivo,
-Cod_Objetivo=pCod_Objetivo,
 Cod_Resultado=pCod_Resultado,
 Cod_Curso=pCod_Curso
 WHERE (Cod_ResulCursObjetivo=pCod_ResulCursObjetivo);

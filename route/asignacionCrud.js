@@ -163,4 +163,47 @@ router.post("/TRubrica", async function(req, res, next) {
   }
 });
 
+router.post("/TEstado", async function(req, res, next) {
+  const { Cod_Curso, Cod_Asignacion , Id_Asignacion} = req.body;
+  try {
+    const TresultadoIndicador = await AsignacionServicio.TraerUno(
+      "CALL USP_MDL_ASIGNACION_TxEstado(?,?,?)",
+      [Cod_Curso, Cod_Asignacion , Id_Asignacion]
+    ).then(RubricaAsignacion => {
+      if (RubricaAsignacion[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          RubricaAsignacion: RubricaAsignacion[0][0].Flag_Activo[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+router.post("/AEstado", async function(req, res, next) {
+  const { Cod_Curso, Cod_Asignacion , Flag_Estado, Id_Asignacion} = req.body;
+  try {
+    const TresultadoIndicador = await AsignacionServicio.Guardar(
+      "CALL USP_MDL_ASIGNACION_AxEstado(?,?,?,?)",
+      [Cod_Curso, Cod_Asignacion , Flag_Estado, Id_Asignacion]
+    ).then(asignaturas => {
+      res.status(201).json({
+        Asignaturas: asignaturas[0],
+        Mensaje: "Asignatura Guardada"
+      });
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+
 module.exports = router;
