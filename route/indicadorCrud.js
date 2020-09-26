@@ -68,6 +68,27 @@ router.get("/ListCom", async function(req, res, next) {
   }
 });
 
+router.get("/ListCBIN", async function(req, res, next) {
+  try {
+    const Tindicador = await IndicadorServicio.TraerTodos(
+      "CALL USP_MDL_INDICADORNIVEL_TCB"
+    ).then(indicadoresNive => {
+      if (indicadoresNive[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          Indicadores: indicadoresNive[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/:Cod_Indicador/:Cod_Resultado/:Cod_Indicadornivel", async function(req, res, next) {
   const {Cod_Indicador, Cod_Resultado, Cod_Indicadornivel} = req.params;
 

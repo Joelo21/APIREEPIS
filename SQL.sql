@@ -2137,7 +2137,7 @@ BEGIN
 	IF (pTCod_Resultado = '0')
 	THEN
 	SET pPosicion_Ind = (SELECT `TraerPosicion`((pCod_Resultado), (pNivelCriterio), (pCod_Criterio)));
-	IF EXISTS(SELECT Cod_AsignacionIndicador FROM MDL_asignacionIndicador WHERE (Cod_Resultado=pCod_Resultado) AND (NivelCriterio=pNivelCriterio) AND (Cod_Criterio=pCod_Criterio))
+	IF EXISTS(SELECT Cod_AsignacionIndicador FROM MDL_asignacionIndicador WHERE (Cod_Resultado=pCod_Resultado) AND (NivelCriterio=pNivelCriterio) AND (Cod_Criterio=pCod_Criterio)
 	THEN
 	UPDATE MDL_asignacionIndicador
 	SET
@@ -2853,6 +2853,14 @@ DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_INDICADORNIVEL_TT`()
 BEGIN
 SELECT * FROM mdl_indicadornivel;
+END//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS `USP_MDL_INDICADORNIVEL_TCB`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_INDICADORNIVEL_TCB`()
+BEGIN
+	SELECT Cod_IndicadorNivel AS value, Cod_IndicadorNivel AS label  FROM mdl_indicadornivel;
 END//
 DELIMITER ;
 

@@ -46,6 +46,30 @@ router.get("/:Cod_Curso", async function(req, res, next) {
   }
 });
 
+
+router.post("/TxDocente", async function(req, res, next) {
+  const { Docente } = req.body;
+  try {
+    const TresultadoIndicador = await CursoServicio.TraerUno(
+      "CALL USP_MDL_CURSOS_TXDOCENTE(?)",
+      [Docente]
+    ).then(RubricaAsignacion => {
+      if (RubricaAsignacion[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          Cursos: RubricaAsignacion[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post("/guardar", async function(req, res, next) {
   const {
     Cod_Curso,

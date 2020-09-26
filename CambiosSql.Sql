@@ -144,7 +144,7 @@ FROM mdl_nivel AS N
 INNER JOIN mdl_criterio AS C ON N.Cod_Criterio = C.Cod_Criterio
 INNER JOIN mdl_rubrica AS R ON C.Cod_RubricaPersona = R.Cod_RubricaPersona
 INNER JOIN mdl_persona AS P ON R.Cod_Persona = P.Cod_Persona
-INNER JOIN mdl_asignacion AS A ON R.Cod_Asignacion = A.Cod_Asignacion AND A.Flag_Activo = 1 AND A.Id_Asignacion = pId_Asignacion AND A.Cod_Unidad = pCod_Unidad
+INNER JOIN mdl_asignacion AS A ON R.Cod_Asignacion = A.Cod_Asignacion AND A.Flag_Activo = 1 AND A.Cod_Unidad = pCod_Unidad
 INNER JOIN mdl_grubrica AS GR ON A.Cod_Asignacion = GR.Cod_Asignacion
 INNER JOIN mdl_gcriterio AS GC ON GR.Cod_Rubrica = GC.Cod_Rubrica AND GC.DesCriterio = C.DesCriterio
 INNER JOIN mdl_asignacionindicador AS AI ON GC.Cod_Criterio = AI.Cod_Criterio AND GC.NivelCriterio = AI.NivelCriterio
@@ -153,6 +153,17 @@ INNER JOIN mdl_resulcursobjetivo AS RC ON IR.Cod_Resultado = RC.Cod_ResulCursObj
 ORDER BY P.Nombre, RC.Cod_Resultado, IR.Cod_Indicador ASC;
 END//
 DELIMITER ; 
+
+DROP PROCEDURE IF EXISTS `USP_MDL_CURSOS_TXDOCENTE`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_MDL_CURSOS_TXDOCENTE`(
+IN pDocente VARCHAR(200)
+)
+BEGIN
+SELECT * FROM mdl_curso
+WHERE (Docente=pDocente);
+END//
+DELIMITER ;
 
 SELECT A.NomAsignacion, P.Nombre, C.NivelCriterio, GC.DesCriterio, RC.Cod_Resultado, IR.Cod_Indicador, IF(N.PuntajeFinal=0.99, 1, N.PuntajeFinal) AS PuntajeFinal 
 FROM mdl_nivel AS N
