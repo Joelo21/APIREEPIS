@@ -179,5 +179,28 @@ INNER JOIN mdl_resulcursobjetivo AS RC ON IR.Cod_Resultado = RC.Cod_ResulCursObj
 ORDER BY P.Nombre, RC.Cod_Resultado, IR.Cod_Indicador ASC
 
 
+DROP PROCEDURE IF EXISTS `USP_VALIDAR_Rubrica`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `USP_VALIDAR_Rubrica`(
+   IN pCod_Curso varchar(8))
+BEGIN
+		DECLARE MERROR VARCHAR(1024);
+		IF NOT EXISTS (
+		SELECT Id_Asignacion FROM mdl_asignacion 
+		WHERE Cod_Curso = pCod_Curso)
+		THEN
+		SET MERROR = 'Verifique que se hay actividades en el Curso';
+		ELSEIF NOT EXISTS ( SELECT Id_Asignacion FROM mdl_asignacion WHERE Flag_Activo = 1 AND Cod_Curso = pCod_Curso)
+		THEN
+		SET MERROR = 'Al menos una actividad debe ser seleccionada';
+		ELSE
+		SET MERROR = 'GOZZUUUUU';
+		END IF;		
+		SELECT MERROR;
+	END//
+DELIMITER ;
+
+
+
 
 SELECT * FROM mdl_asignacion WHERE Flag_Activo = true

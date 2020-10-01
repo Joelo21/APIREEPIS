@@ -186,6 +186,28 @@ router.post("/TEstado", async function(req, res, next) {
   }
 });
 
+router.post("/Validar_RelacionIndCri2", async function(req, res, next) {
+  const { Cod_Curso, Cod_Rubrica } = req.body;
+  try {
+    const TresultadoIndicador = await AsignacionServicio.TraerUno(
+      "CALL USP_VALIDAR_RelacionIndCri(?,?)",
+      [Cod_Curso, Cod_Rubrica]
+    ).then(RubricaAsignacion => {
+      if (RubricaAsignacion[0].length === 0) {
+        res.json({
+          Codigo: 0
+        });
+      } else {
+        res.status(200).json({
+          RubricaAsignacion: RubricaAsignacion[0],
+          Codigo: 1
+        });
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.post("/AEstado", async function(req, res, next) {
   const { Cod_Curso, Cod_Asignacion , Flag_Estado, Id_Asignacion} = req.body;
