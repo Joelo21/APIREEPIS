@@ -115,11 +115,11 @@ router.post("/Guardar", async function(req, res, next) {
 });
 
 router.delete("/Del", async function(req, res, next) {
-  const { Cod_objetivoResultado } = req.body;
+  const { Cod_ResulCursObjetivo } = req.body;
   try {
     const EobjetivoResultado = await ObjetivoResultadoServicio.Eliminar(
       "CALL USP_MDL_ResulCursObjetivo_E(?)",
-      [Cod_objetivoResultado]
+      [Cod_ResulCursObjetivo]
     ).then(objetivoResultado => {
       if (objetivoResultado.affectedRows === 0) {
         res.json({
