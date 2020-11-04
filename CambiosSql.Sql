@@ -189,7 +189,10 @@ BEGIN
 		SELECT Id_Asignacion FROM mdl_asignacion 
 		WHERE Cod_Curso = pCod_Curso)
 		THEN
-		SET MERROR = 'Verifique que se hay actividades en el Curso';
+		SET MERROR = 'Verifique que se tenga actividades en el Curso';
+		ELSEIF NOT EXISTS ( SELECT Cod_Rubrica FROM mdl_asignacionindicador WHERE  Cod_Curso = pCod_Curso)
+		THEN
+		SET MERROR = 'NO se encuentran relaciones';
 		ELSEIF NOT EXISTS ( SELECT Id_Asignacion FROM mdl_asignacion WHERE Flag_Activo = 1 AND Cod_Curso = pCod_Curso)
 		THEN
 		SET MERROR = 'Al menos una actividad debe ser seleccionada';
@@ -200,7 +203,38 @@ BEGIN
 	END//
 DELIMITER ;
 
+DROP FUNCTION IF EXISTS `TraerCurso`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `TraerCurso`(pCod_Curso VARCHAR(16)) RETURNS VARCHAR(1024) CHARSET utf8
+RETURN (SELECT NomCurso FROM mdl_curso WHERE Cod_Curso = pCod_Curso)//
+DELIMITER ;
 
+DROP FUNCTION IF EXISTS `TraerDocenteCurso`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `TraerDocenteCurso`(pCod_Curso VARCHAR(16)) RETURNS VARCHAR(1024) CHARSET utf8
+RETURN (SELECT Docente FROM mdl_curso WHERE Cod_Curso = pCod_Curso)//
+DELIMITER ;
 
-
-SELECT * FROM mdl_asignacion WHERE Flag_Activo = true
+DROP PROCEDURE IF EXISTS `URP_TRAER_NOTAS_CSV`;
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` PROCEDURE `URP_TRAER_NOTAS_CSV`(
+   IN pCod_Curso VARCHAR(16))
+BEGIN
+		DECLARE Curso VARCHAR(1024);
+		DECLARE Docente VARCHAR(1024);
+		SET Curso = (SELECT `TraerCurso`('10'));
+		SET Docente = (SELECT `TraerDocenteCurso`('10'));
+		SELECT  Curso, Docente, A.NomAsignacion AS Actividad, P.NomPersona AS CodigoAlumno, RC.Cod_Resultado AS Resultado, IR.Cod_Indicador AS Indicador, IF(N.PuntajeFinal=0.99, 1, N.PuntajeFinal) AS Valor 
+		FROM mdl_nivel AS N
+		INNER JOIN mdl_criterio AS C ON N.Cod_Criterio = C.Cod_Criterio
+		INNER JOIN mdl_rubrica AS R ON C.Cod_RubricaPersona = R.Cod_RubricaPersona
+		INNER JOIN mdl_persona AS P ON R.Cod_Persona = P.Cod_Persona
+		INNER JOIN mdl_asignacion AS A ON R.Cod_Asignacion = A.Cod_Asignacion AND A.Flag_Activo = 1 AND A.Cod_Unidad = '26'
+		INNER JOIN mdl_grubrica AS GR ON A.Cod_Asignacion = GR.Cod_Asignacion
+		INNER JOIN mdl_gcriterio AS GC ON GR.Cod_Rubrica = GC.Cod_Rubrica AND GC.DesCriterio = C.DesCriterio
+		INNER JOIN mdl_asignacionindicador AS AI ON GC.Cod_Criterio = AI.Cod_Criterio AND GC.NivelCriterio = AI.NivelCriterio
+		INNER JOIN mdl_indrecursobjetivo AS IR ON AI.Cod_Resultado = IR.Cod_IndicarResultado
+		INNER JOIN mdl_resulcursobjetivo AS RC ON IR.Cod_Resultado = RC.Cod_ResulCursObjetivo AND RC.Cod_Curso = '10'
+		ORDER BY A.NomAsignacion, P.NomPersona, RC.Cod_Resultado, IR.Cod_Indicador ASC;
+	END//
+DELIMITER ;

@@ -48,7 +48,7 @@ router.get("/:Cod_Asignacion", async function(req, res, next) {
   }
 });
 
-router.post("/Guardar", async function(req, res, next) {
+router.post("/GParticipantes", async function(req, res, next) {
   const {
     Cod_Asignacion,
     Participantes,
@@ -67,7 +67,7 @@ router.post("/Guardar", async function(req, res, next) {
       ]
     ).then(asignaturas => {
       res.status(201).json({
-        Asignaturas: asignaturas[0][0],
+        Asignaturas: asignaturas[0],
         Mensaje: "Asignatura participantes Guardada"
       });
     });
@@ -95,7 +95,7 @@ router.post("/Guardar", async function(req, res, next) {
       "CALL USP_MDL_ASIGNACION_G(?,?,?,?,?,?,?,?,?,?)",
       [
         Cod_Curso,
-        Cod_Asignacion,
+        Cod_Asignacion,        
         Id_Asignacion,
         NomAsignacion,
         TipoAsignacion,
@@ -103,7 +103,7 @@ router.post("/Guardar", async function(req, res, next) {
         Presentados,
         Pendientes,
         Cod_Unidad,
-        Flag_Activo
+        Flag_Activo        
       ]
     ).then(asignaturas => {
       res.status(201).json({

@@ -14,7 +14,6 @@ class SRubrica
       return rubricaIDT || []
     }
 
-
   async TraerUno(pProcedimiento,pParam)
     {
       const rubricaIDTU = await this.Mysqlib.TraerUno(pProcedimiento,pParam);
